@@ -1,0 +1,3213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kapu — Universal Securities-Backed Lending Platform · Specification</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&family=Google+Sans+Text:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kapu-primary: #b636bd;
+  --kapu-primary-dark: #7a1f80;
+  --kapu-primary-darker: #4d1352;
+  --kapu-primary-light: #d678dc;
+  --kapu-primary-50: #faeefb;
+  --kapu-primary-100: #f3d8f5;
+  --kapu-primary-200: #e6b0eb;
+  --kapu-accent: #ffb547;
+  --kapu-success: #2bb673;
+  --kapu-danger: #e85b5b;
+  --kapu-info: #4a90e2;
+
+  --ink-900: #14101a;
+  --ink-800: #2a2230;
+  --ink-700: #4b4255;
+  --ink-600: #6b6275;
+  --ink-500: #8c8595;
+  --ink-400: #b3acb8;
+  --ink-300: #d6d2db;
+  --ink-200: #ebe8ee;
+  --ink-100: #f5f3f7;
+  --ink-50:  #fafafc;
+  --bg: #ffffff;
+
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  --shadow-sm: 0 1px 2px rgba(20,16,26,.05), 0 1px 3px rgba(20,16,26,.04);
+  --shadow: 0 4px 12px rgba(122,31,128,.08), 0 1px 3px rgba(20,16,26,.04);
+  --shadow-lg: 0 18px 40px rgba(122,31,128,.14), 0 4px 12px rgba(20,16,26,.06);
+  --shadow-glow: 0 0 0 4px rgba(182,54,189,.10);
+
+  --font: 'Google Sans Text','Google Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-display: 'Google Sans','Google Sans Text',-apple-system,sans-serif;
+  --font-mono: 'Google Sans Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink-900);
+  background: var(--bg);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 .6em;
+  color: var(--ink-900);
+}
+
+h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; letter-spacing: -0.03em; }
+h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 700; }
+h3 { font-size: 1.35rem; font-weight: 500; }
+h4 { font-size: 1.05rem; font-weight: 500; }
+p  { margin: 0 0 1em; color: var(--ink-700); }
+
+a { color: var(--kapu-primary-dark); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+code, pre, .mono { font-family: var(--font-mono); font-size: 0.9em; }
+code {
+  background: var(--ink-100);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--kapu-primary-darker);
+  font-weight: 500;
+}
+
+/* ──────── LAYOUT ──────── */
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+section { padding: 88px 0; border-bottom: 1px solid var(--ink-200); }
+section:last-of-type { border-bottom: none; }
+.section-eyebrow {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--kapu-primary-dark);
+  background: var(--kapu-primary-50);
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+.section-lead { font-size: 1.15rem; color: var(--ink-600); max-width: 780px; }
+
+/* ──────── NAV ──────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--ink-200);
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ink-900);
+}
+.nav-logo-mark {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--kapu-primary) 0%, var(--kapu-primary-darker) 100%);
+  display: grid; place-items: center;
+  color: white; font-weight: 700;
+  box-shadow: var(--shadow);
+}
+.nav-links {
+  display: flex; gap: 22px; margin-left: auto;
+  font-size: 0.92rem;
+}
+.nav-links a {
+  color: var(--ink-700);
+  font-weight: 500;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: all .15s;
+}
+.nav-links a:hover { color: var(--kapu-primary); border-bottom-color: var(--kapu-primary); text-decoration: none; }
+@media (max-width: 880px){ .nav-links { display: none; } }
+
+/* ──────── HERO ──────── */
+.hero {
+  position: relative;
+  padding: 120px 0 100px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 80% 0%, rgba(182,54,189,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 0% 100%, rgba(77,19,82,0.12) 0%, transparent 55%),
+    linear-gradient(180deg, #fff 0%, #fbf6fc 100%);
+  border-bottom: 1px solid var(--ink-200);
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--ink-200) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ink-200) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.35;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+.hero-inner { position: relative; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px;
+  background: white;
+  border: 1px solid var(--kapu-primary-200);
+  border-radius: 999px;
+  font-size: 0.85rem; font-weight: 500;
+  color: var(--kapu-primary-dark);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
+}
+.hero-badge::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--kapu-success);
+  box-shadow: 0 0 0 3px rgba(43,182,115,0.25);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(43,182,115,0.25); }
+  50%    { box-shadow: 0 0 0 6px rgba(43,182,115,0.05); }
+}
+.hero h1 {
+  background: linear-gradient(135deg, var(--ink-900) 0%, var(--kapu-primary-darker) 60%, var(--kapu-primary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 24px;
+  max-width: 920px;
+}
+.hero-sub {
+  font-size: 1.25rem;
+  color: var(--ink-700);
+  max-width: 720px;
+  margin-bottom: 36px;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 24px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: all .15s;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--kapu-primary) 0%, var(--kapu-primary-dark) 100%);
+  color: white;
+  box-shadow: 0 6px 18px rgba(182,54,189,0.32);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(182,54,189,0.42); text-decoration: none; }
+.btn-ghost {
+  background: white;
+  color: var(--ink-900);
+  border: 1px solid var(--ink-300);
+}
+.btn-ghost:hover { border-color: var(--kapu-primary); color: var(--kapu-primary-dark); text-decoration: none; }
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 1px solid var(--ink-200);
+}
+.hero-stat-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--kapu-primary) 0%, var(--kapu-primary-darker) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+}
+.hero-stat-label {
+  font-size: 0.85rem;
+  color: var(--ink-600);
+  margin-top: 6px;
+  font-weight: 500;
+}
+@media (max-width: 720px){ .hero-stats { grid-template-columns: repeat(2, 1fr); } }
+
+/* ──────── DOC META ──────── */
+.doc-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 48px;
+  padding: 24px;
+  background: white;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.doc-meta-cell { padding: 4px 20px; border-right: 1px solid var(--ink-200); }
+.doc-meta-cell:last-child { border-right: none; }
+.doc-meta-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-500); font-weight: 600; }
+.doc-meta-value { font-family: var(--font-display); font-weight: 500; color: var(--ink-900); margin-top: 4px; }
+@media (max-width: 720px){
+  .doc-meta { grid-template-columns: 1fr 1fr; }
+  .doc-meta-cell:nth-child(2n) { border-right: none; }
+  .doc-meta-cell:nth-child(-n+2) { border-bottom: 1px solid var(--ink-200); padding-bottom: 14px; }
+  .doc-meta-cell:nth-last-child(-n+2) { padding-top: 14px; }
+}
+
+/* ──────── CARDS / GRIDS ──────── */
+.card {
+  background: white;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  transition: all .2s;
+}
+.card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); border-color: var(--kapu-primary-200); }
+.card-icon {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--kapu-primary-50) 0%, var(--kapu-primary-100) 100%);
+  display: grid; place-items: center;
+  margin-bottom: 18px;
+  color: var(--kapu-primary-dark);
+}
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 880px){
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+
+/* ──────── ARCHITECTURE ──────── */
+.arch-stage {
+  background: linear-gradient(180deg, #fbf6fc 0%, #ffffff 100%);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  margin-top: 32px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: relative;
+}
+.arch-legend {
+  display: flex; gap: 22px; flex-wrap: wrap;
+  margin-top: 24px; padding-top: 20px;
+  border-top: 1px solid var(--ink-200);
+  font-size: 0.85rem;
+  color: var(--ink-700);
+}
+.arch-legend-item { display: flex; align-items: center; gap: 8px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* ──────── PROCESS / FLOW ──────── */
+.flow-stage {
+  background: white;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-top: 24px;
+}
+.flow-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  align-items: stretch;
+  position: relative;
+}
+.flow-step {
+  background: var(--ink-50);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius);
+  padding: 18px;
+  position: relative;
+  text-align: center;
+  margin: 0 6px;
+}
+.flow-step-num {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--kapu-primary) 0%, var(--kapu-primary-dark) 100%);
+  color: white; font-weight: 700; font-size: 0.8rem;
+  display: grid; place-items: center;
+  box-shadow: 0 4px 10px rgba(182,54,189,0.4);
+}
+.flow-step-title { font-family: var(--font-display); font-weight: 500; font-size: 0.95rem; margin: 8px 0 4px; }
+.flow-step-desc { font-size: 0.8rem; color: var(--ink-600); margin: 0; }
+@media (max-width: 880px){ .flow-row { grid-template-columns: 1fr; } .flow-step { margin: 6px 0; } }
+
+/* ──────── TABLES ──────── */
+.req-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-size: 0.92rem;
+  background: white;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.req-table thead { background: linear-gradient(135deg, var(--kapu-primary-50) 0%, var(--kapu-primary-100) 100%); }
+.req-table th {
+  text-align: left; padding: 14px 16px;
+  font-family: var(--font-display); font-weight: 500;
+  color: var(--kapu-primary-darker);
+  font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.req-table td { padding: 13px 16px; border-top: 1px solid var(--ink-200); vertical-align: top; color: var(--ink-700); }
+.req-table tr:hover td { background: var(--kapu-primary-50); }
+.req-id { font-family: var(--font-mono); font-weight: 500; color: var(--kapu-primary-dark); white-space: nowrap; }
+
+.pri { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; font-family: var(--font-display); }
+.pri-1 { background: #fde9eb; color: #c0392b; }
+.pri-2 { background: #fff4dd; color: #b07a00; }
+.pri-3 { background: #e3f2ff; color: #1e63a8; }
+
+/* ──────── MODULE GRID ──────── */
+.module {
+  background: white;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  position: relative;
+  overflow: hidden;
+  transition: all .2s;
+}
+.module::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--kapu-primary) 0%, var(--kapu-primary-dark) 100%);
+}
+.module:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+.module-tag {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  color: var(--kapu-primary-dark); font-weight: 500;
+  margin-bottom: 6px;
+}
+.module h3 { margin-bottom: 8px; font-size: 1.2rem; }
+.module-list { padding-left: 18px; margin: 12px 0 0; font-size: 0.9rem; color: var(--ink-700); }
+.module-list li { margin-bottom: 4px; }
+
+/* ──────── CALLOUTS ──────── */
+.callout {
+  background: linear-gradient(135deg, var(--kapu-primary-50) 0%, #fff 100%);
+  border-left: 4px solid var(--kapu-primary);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin: 20px 0;
+}
+.callout-title {
+  font-family: var(--font-display); font-weight: 500;
+  color: var(--kapu-primary-darker);
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ──────── PHONE MOCKUP ──────── */
+.phone-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; align-items: start; }
+@media (max-width: 980px){ .phone-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px){ .phone-grid { grid-template-columns: 1fr; } }
+.phone {
+  width: 100%; max-width: 240px;
+  margin: 0 auto;
+  border: 8px solid #1f1a23;
+  border-radius: 32px;
+  background: white;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(20,16,26,0.18), 0 4px 12px rgba(20,16,26,0.06);
+  position: relative;
+}
+.phone-screen { aspect-ratio: 9/19.5; background: var(--ink-50); padding: 12px; font-size: 0.7rem; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+.phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 18px; background: #1f1a23; border-radius: 0 0 12px 12px; z-index: 2; }
+.phone-caption { font-family: var(--font-display); font-weight: 500; text-align: center; margin-top: 14px; font-size: 0.85rem; color: var(--ink-700); }
+.ps-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 4px; }
+.ps-logo { font-family: var(--font-display); font-weight: 700; color: var(--kapu-primary); font-size: 0.75rem; }
+.ps-card {
+  background: white; border-radius: 10px; padding: 10px; border: 1px solid var(--ink-200);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.ps-card.primary { background: linear-gradient(135deg, var(--kapu-primary) 0%, var(--kapu-primary-dark) 100%); color: white; border: none; }
+.ps-label { font-size: 0.6rem; opacity: 0.75; }
+.ps-value { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; }
+.ps-row { display: flex; justify-content: space-between; align-items: center; }
+.ps-pill { font-size: 0.55rem; padding: 1px 6px; border-radius: 8px; background: var(--kapu-primary-50); color: var(--kapu-primary-dark); font-weight: 600; }
+.ps-btn { background: var(--kapu-primary); color: white; padding: 6px; border-radius: 8px; text-align: center; font-weight: 500; font-size: 0.7rem; }
+.ps-input { background: white; border: 1px solid var(--ink-300); border-radius: 6px; padding: 5px 8px; font-size: 0.65rem; color: var(--ink-700); }
+.ps-otp { display: flex; gap: 4px; justify-content: center; }
+.ps-otp span { width: 22px; height: 28px; background: white; border: 1px solid var(--ink-300); border-radius: 4px; display: grid; place-items: center; font-weight: 700; font-family: var(--font-display); color: var(--kapu-primary-dark); font-size: 0.85rem; }
+.ps-otp span.active { border-color: var(--kapu-primary); box-shadow: 0 0 0 2px var(--kapu-primary-50); }
+.ps-bank { display: flex; justify-content: space-between; align-items: center; padding: 7px; background: white; border: 1px solid var(--ink-200); border-radius: 8px; }
+.ps-bank-name { font-weight: 500; font-size: 0.7rem; }
+.ps-bank-rate { font-family: var(--font-mono); color: var(--kapu-primary-dark); font-weight: 600; font-size: 0.7rem; }
+.ps-bank.selected { border-color: var(--kapu-primary); background: var(--kapu-primary-50); }
+
+/* ──────── SCROLL TRIGGER FOR ANIMS ──────── */
+.fade-up { opacity: 0; transform: translateY(20px); transition: all .8s ease-out; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ──────── FOOTER ──────── */
+.footer { padding: 56px 0; background: var(--ink-900); color: var(--ink-300); text-align: center; font-size: 0.9rem; }
+.footer strong { color: white; }
+.footer-mark {
+  display: inline-block;
+  font-family: var(--font-display); font-weight: 700;
+  color: white;
+  margin-bottom: 8px;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+}
+.footer-mark span { color: var(--kapu-primary-light); }
+
+/* ──────── TOC ──────── */
+.toc-list {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  list-style: none; padding: 0; margin-top: 24px; counter-reset: toc;
+}
+@media (max-width: 720px){ .toc-list { grid-template-columns: 1fr; } }
+.toc-list li { counter-increment: toc; }
+.toc-list a {
+  display: block;
+  padding: 14px 16px;
+  background: white;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius);
+  color: var(--ink-900);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all .15s;
+  position: relative;
+  padding-left: 48px;
+}
+.toc-list a::before {
+  content: counter(toc, decimal-leading-zero);
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono);
+  color: var(--kapu-primary);
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+.toc-list a:hover { border-color: var(--kapu-primary); color: var(--kapu-primary-dark); text-decoration: none; box-shadow: var(--shadow); }
+
+/* ──────── DATA MODEL ──────── */
+.entity {
+  background: white;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+.entity-head {
+  background: linear-gradient(135deg, var(--kapu-primary) 0%, var(--kapu-primary-dark) 100%);
+  color: white;
+  padding: 10px 14px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
+}
+.entity-row { padding: 7px 14px; border-bottom: 1px solid var(--ink-100); display: flex; justify-content: space-between; gap: 8px; }
+.entity-row:last-child { border-bottom: none; }
+.entity-field { color: var(--ink-800); font-weight: 500; }
+.entity-type { color: var(--kapu-primary); }
+.entity-row.pk { background: var(--kapu-primary-50); }
+.entity-row.pk .entity-field::before { content: '🔑 '; }
+
+/* ──────── ROADMAP ──────── */
+.timeline { position: relative; padding-left: 40px; }
+.timeline::before {
+  content: ''; position: absolute; left: 14px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--kapu-primary) 0%, var(--kapu-primary-darker) 100%);
+}
+.timeline-item { position: relative; margin-bottom: 32px; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -34px; top: 6px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: white;
+  border: 3px solid var(--kapu-primary);
+  box-shadow: 0 0 0 4px var(--kapu-primary-50);
+}
+.timeline-phase {
+  font-family: var(--font-display); font-weight: 700;
+  color: var(--kapu-primary-dark); font-size: 0.85rem;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.timeline-item h4 { margin-bottom: 6px; }
+
+/* ──────── EXECUTION PLAN ──────── */
+.exec-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 28px;
+}
+.exec-summary-card {
+  background: white;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius);
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.exec-summary-card::before {
+  content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px;
+}
+.exec-summary-card.t-a::before { background: #b636bd; }
+.exec-summary-card.t-b::before { background: #7a1f80; }
+.exec-summary-card.t-c::before { background: #4d1352; }
+.exec-summary-card.t-d::before { background: #ffb547; }
+.exec-summary-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 700;
+  color: var(--ink-500); letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.exec-summary-card h4 { margin: 4px 0 6px; font-size: 1rem; }
+.exec-summary-card p { font-size: 0.85rem; margin: 0; color: var(--ink-600); }
+@media (max-width: 880px){ .exec-summary { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px){ .exec-summary { grid-template-columns: 1fr; } }
+
+/* Gantt-style track grid */
+.gantt-wrap {
+  background: white;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 24px;
+  box-shadow: var(--shadow);
+}
+.gantt-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.gantt {
+  display: grid;
+  grid-template-columns: 160px repeat(6, minmax(90px, 1fr));
+  min-width: 700px;
+}
+.gantt-header {
+  background: var(--ink-50);
+  padding: 12px 14px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--ink-700);
+  text-align: center;
+  border-bottom: 1px solid var(--ink-200);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.gantt-header.first { text-align: left; padding-left: 16px; }
+.gantt-track-label {
+  padding: 14px 16px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.88rem;
+  border-bottom: 1px solid var(--ink-100);
+  background: var(--ink-50);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.gantt-track-label .gantt-engineer {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--ink-500);
+  margin-top: 2px;
+}
+.gantt-cell {
+  border-bottom: 1px solid var(--ink-100);
+  border-left: 1px solid var(--ink-100);
+  position: relative;
+  min-height: 56px;
+  padding: 6px 4px;
+}
+.gantt-bar {
+  position: relative;
+  min-height: 28px;
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: var(--font-display);
+  color: white;
+  padding: 5px 8px;
+  box-shadow: 0 2px 6px rgba(122,31,128,0.18);
+  white-space: normal;
+  overflow: hidden;
+  word-break: break-word;
+  hyphens: auto;
+  line-height: 1.2;
+  text-align: center;
+  margin: 4px 0;
+  cursor: default;
+}
+.gantt-bar.t-a { background: linear-gradient(90deg, #d678dc 0%, #b636bd 100%); }
+.gantt-bar.t-b { background: linear-gradient(90deg, #b636bd 0%, #7a1f80 100%); }
+.gantt-bar.t-c { background: linear-gradient(90deg, #7a1f80 0%, #4d1352 100%); }
+.gantt-bar.t-d { background: linear-gradient(90deg, #ffc56e 0%, #e89a1f 100%); color: #4d1352; }
+.gantt-bar.api::after {
+  content: '🔌'; font-size: 0.85rem; line-height: 1;
+}
+.gantt-milestone {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 14px; height: 14px;
+  background: #ffb547;
+  border: 2px solid #4d1352;
+  z-index: 2;
+  pointer-events: none;
+}
+.gantt-bar-2 { grid-column: span 2; }
+.gantt-bar-3 { grid-column: span 3; }
+.gantt-bar-4 { grid-column: span 4; }
+
+@media (max-width: 720px){
+  .gantt { grid-template-columns: 110px repeat(6, minmax(70px, 1fr)); min-width: 540px; }
+  .gantt-track-label { padding: 12px 10px; font-size: 0.8rem; }
+  .gantt-track-label .gantt-engineer { font-size: 0.66rem; }
+  .gantt-bar { font-size: 0.66rem; padding: 4px 6px; }
+  .gantt-cell { min-height: 60px; padding: 5px 3px; }
+  .gantt-header { padding: 10px 8px; font-size: 0.72rem; }
+}
+
+/* Mobile-friendly track view (alt to gantt on small screens) */
+.exec-tracks {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-top: 32px;
+}
+@media (max-width: 880px){ .exec-tracks { grid-template-columns: 1fr; } }
+.track-card {
+  background: white;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border-top: 5px solid var(--kapu-primary);
+}
+.track-card.t-a { border-top-color: #b636bd; }
+.track-card.t-b { border-top-color: #7a1f80; }
+.track-card.t-c { border-top-color: #4d1352; }
+.track-card.t-d { border-top-color: #ffb547; }
+.track-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem; font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--kapu-primary-50);
+  color: var(--kapu-primary-dark);
+}
+.track-engineer {
+  font-size: 0.78rem;
+  color: var(--ink-500);
+  font-weight: 500;
+  margin-left: 8px;
+}
+.track-card h3 { margin: 12px 0 6px; font-size: 1.15rem; }
+.track-tasks { list-style: none; padding: 0; margin: 16px 0 0; }
+.track-tasks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--ink-100);
+  font-size: 0.9rem;
+}
+.track-tasks li:first-child { border-top: none; padding-top: 4px; }
+.task-week {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem; font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--ink-100);
+  color: var(--ink-700);
+  margin-top: 1px;
+  min-width: 50px;
+  text-align: center;
+}
+.task-content { flex: 1; }
+.task-title { font-weight: 500; color: var(--ink-900); }
+.task-note { font-size: 0.78rem; color: var(--ink-600); margin-top: 2px; }
+
+/* API dependency badge inline */
+.api-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #fff4dd 0%, #ffe2a3 100%);
+  color: #8a5a00;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #ffd68a;
+  margin-left: 6px;
+  white-space: nowrap;
+}
+.api-badge::before { content: '🔌'; font-size: 0.78rem; }
+
+/* Milestone cards */
+.milestones {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 28px;
+}
+@media (max-width: 880px){ .milestones { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px){ .milestones { grid-template-columns: 1fr; } }
+.milestone {
+  background: linear-gradient(180deg, #ffffff 0%, #faeefb 100%);
+  border: 1px solid var(--kapu-primary-200);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  position: relative;
+  text-align: center;
+}
+.milestone-flag {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--kapu-primary) 0%, var(--kapu-primary-darker) 100%);
+  color: white;
+  display: grid; place-items: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0 auto 12px;
+  box-shadow: 0 6px 16px rgba(122,31,128,0.3);
+}
+.milestone-week {
+  font-family: var(--font-mono);
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--kapu-primary-dark);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.milestone h4 { margin: 4px 0 8px; font-size: 1rem; }
+.milestone p { font-size: 0.82rem; margin: 0; color: var(--ink-600); }
+
+/* External APIs table */
+.api-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 24px;
+  background: white;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.api-table thead {
+  background: linear-gradient(135deg, var(--kapu-primary) 0%, var(--kapu-primary-dark) 100%);
+}
+.api-table thead th {
+  color: white;
+  text-align: left;
+  padding: 14px 16px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.api-table td {
+  padding: 14px 16px;
+  border-top: 1px solid var(--ink-200);
+  vertical-align: top;
+  font-size: 0.9rem;
+  color: var(--ink-700);
+}
+.api-table tr:first-child td { border-top: none; }
+.api-table tr:hover td { background: var(--kapu-primary-50); }
+.api-provider {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--ink-900);
+  font-size: 0.95rem;
+}
+.api-purpose-list { padding-left: 16px; margin: 4px 0 0; font-size: 0.84rem; }
+.api-purpose-list li { margin-bottom: 2px; }
+.urgency-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: var(--font-display);
+  white-space: nowrap;
+}
+.urgency-now { background: #fde9eb; color: #c0392b; }
+.urgency-soon { background: #fff4dd; color: #b07a00; }
+.urgency-later { background: #e3f2ff; color: #1e63a8; }
+
+/* Mobile-only API stack (when table gets cramped) */
+@media (max-width: 720px){
+  .api-table thead { display: none; }
+  .api-table, .api-table tbody, .api-table tr, .api-table td { display: block; width: 100%; }
+  .api-table tr {
+    border-top: 1px solid var(--ink-200);
+    padding: 14px 16px;
+  }
+  .api-table tr:first-child { border-top: none; }
+  .api-table td {
+    border-top: none;
+    padding: 4px 0;
+  }
+  .api-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--ink-500);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 2px;
+  }
+}
+
+/* Parallelism diagram */
+.parallel-diagram {
+  background: white;
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 24px;
+}
+
+/* ──────── RESPONSIVE ──────── */
+@media (max-width: 720px){
+  section { padding: 64px 0; }
+  .hero { padding: 80px 0 64px; }
+  .wrap { padding: 0 20px; }
+  .nav-inner { padding: 12px 20px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <div class="nav-logo-mark">K</div>
+      <span>Kapu</span>
+    </div>
+    <div class="nav-links">
+      <a href="#overview">Overview</a>
+      <a href="#journey">Journey</a>
+      <a href="#modules">Modules</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#requirements">Requirements</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#execution">Execution</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<header class="hero">
+  <div class="hero-grid"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-badge">Specification · v1.0 · Draft</div>
+    <h1>Kapu — the universal rail for securities-backed lending in Tanzania.</h1>
+    <p class="hero-sub">
+      One mobile app. One WhatsApp chatbot. Every bank, broker and shareholder. Kapu turns DSE shares
+      into instant collateral on a single, open ecosystem — built so any financial institution can plug
+      in, configure their loan appetite, and serve investors at the speed of a tap.
+    </p>
+    <div class="hero-actions">
+      <a href="#overview" class="btn btn-primary">Read the spec ↓</a>
+      <a href="#architecture" class="btn btn-ghost">See the architecture</a>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">~3 min</div>
+        <div class="hero-stat-label">Target loan TAT, end-to-end</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">N+1</div>
+        <div class="hero-stat-label">Banks pluggable via API</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">2</div>
+        <div class="hero-stat-label">Channels: Mobile + WhatsApp</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-label">Straight-through eligible flows</div>
+      </div>
+    </div>
+
+    <div class="doc-meta">
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Document</div>
+        <div class="doc-meta-value">Product Specification</div>
+      </div>
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Version</div>
+        <div class="doc-meta-value">1.0.0 · Draft</div>
+      </div>
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Status</div>
+        <div class="doc-meta-value">For Review</div>
+      </div>
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Date</div>
+        <div class="doc-meta-value">May 2026</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════ TOC ═══════════════ -->
+<section style="padding: 64px 0; background: var(--ink-50);">
+  <div class="wrap">
+    <div class="section-eyebrow">Contents</div>
+    <h2>Inside this specification</h2>
+    <p class="section-lead">A practical walk-through of what Kapu is, how it works, and how it plugs into the existing Tanzanian capital-markets and banking landscape.</p>
+    <ol class="toc-list">
+      <li><a href="#overview">Executive Summary</a></li>
+      <li><a href="#vision">Product Vision &amp; Positioning</a></li>
+      <li><a href="#journey">User Journey</a></li>
+      <li><a href="#screens">Key Screens</a></li>
+      <li><a href="#modules">Platform Modules</a></li>
+      <li><a href="#process">Process Flows</a></li>
+      <li><a href="#architecture">System Architecture</a></li>
+      <li><a href="#integrations">API &amp; Integration Layer</a></li>
+      <li><a href="#data">Data Model</a></li>
+      <li><a href="#requirements">Functional Requirements</a></li>
+      <li><a href="#nfr">Non-Functional Requirements</a></li>
+      <li><a href="#security">Security &amp; Compliance</a></li>
+      <li><a href="#roadmap">Phasing &amp; Roadmap</a></li>
+      <li><a href="#execution">Execution Plan &amp; Engineering Tracks</a></li>
+      <li><a href="#glossary">Glossary</a></li>
+      <li><a href="#assumptions">Assumptions</a></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══════════════ EXECUTIVE SUMMARY ═══════════════ -->
+<section id="overview">
+  <div class="wrap">
+    <div class="section-eyebrow">01 · Executive Summary</div>
+    <h2>What is Kapu?</h2>
+    <p class="section-lead">
+      Kapu is a universal, multi-tenant lending rail that lets any Tanzanian shareholder borrow against
+      their DSE-listed securities — instantly, digitally, and from any participating financial institution
+      they choose.
+    </p>
+
+    <div class="grid-2" style="margin-top: 36px;">
+      <div class="card">
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
+        </div>
+        <h3>The problem today</h3>
+        <p>Securities-backed loans in Tanzania are still largely manual. A shareholder who wants to borrow against their portfolio has to coordinate between a bank, a stockbroker, and the CDS — paper-by-paper, signature-by-signature. Turnaround time is days, not minutes. Each bank that wants to offer this product rebuilds the same plumbing from scratch.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </div>
+        <h3>What Kapu does</h3>
+        <p>Kapu acts as the shared rail. Shareholders see their full portfolio, request a loan, and choose from competing offers across multiple banks — all from a mobile app or a WhatsApp chat. Banks plug into Kapu's APIs, configure their loan appetite (rates, tenors, LTV, haircuts), and let Kapu's eligibility engine, lien orchestration, and disbursement flow do the rest.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">↳ The shift in one sentence</div>
+      <p style="margin: 0;">
+        The original BRD describes <em>one bank</em> automating <em>one product</em>. Kapu generalizes that
+        into <strong>a market utility</strong>: one onboarding, one CDS link, one credit profile — usable
+        across many banks, many products, many shareholders.
+      </p>
+    </div>
+
+    <h3 style="margin-top: 48px;">Outcomes Kapu unlocks</h3>
+    <div class="grid-3" style="margin-top: 18px;">
+      <div class="card">
+        <div class="card-icon">⏱️</div>
+        <h4 style="margin-bottom:6px;">Sub-5-minute TAT</h4>
+        <p style="margin:0;font-size:0.92rem;">From CDS link to disbursement, eligible flows complete straight-through with no human in the loop.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏦</div>
+        <h4 style="margin-bottom:6px;">Lender competition</h4>
+        <p style="margin:0;font-size:0.92rem;">Shareholders see real offers from configured banks side-by-side and pick the best rate and tenor.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔒</div>
+        <h4 style="margin-bottom:6px;">Controlled risk</h4>
+        <p style="margin:0;font-size:0.92rem;">Real-time CDS lien marking, dynamic haircuts, CRB integration, and forced-liquidation rails per lender.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <h4 style="margin-bottom:6px;">Market depth</h4>
+        <p style="margin:0;font-size:0.92rem;">Unlocks dormant value sitting in DSE portfolios; turns shares into productive, liquid collateral.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔌</div>
+        <h4 style="margin-bottom:6px;">Plug-and-play for banks</h4>
+        <p style="margin:0;font-size:0.92rem;">A bank joins Kapu, exposes its LMS endpoints, configures product rules, and is live — without rebuilding the rails.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💬</div>
+        <h4 style="margin-bottom:6px;">Reach via WhatsApp</h4>
+        <p style="margin:0;font-size:0.92rem;">Shareholders without a smartphone-grade app experience can still onboard, view portfolio, and borrow via chat.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ VISION ═══════════════ -->
+<section id="vision" style="background: var(--ink-50);">
+  <div class="wrap">
+    <div class="section-eyebrow">02 · Product Vision</div>
+    <h2>One rail. Every bank. Every shareholder.</h2>
+    <p class="section-lead">
+      Kapu's design principle is universality. Ownership data lives at CDS. Credit history lives at the
+      CRB. Money lives at the banks. Kapu simply routes between them — fast, securely, and with the
+      shareholder firmly in control.
+    </p>
+
+    <div class="grid-3" style="margin-top: 36px;">
+      <div class="module">
+        <div class="module-tag">PRINCIPLE_01</div>
+        <h3>Shareholder-first</h3>
+        <p style="margin:0;">A single Kapu account is the shareholder's identity across every participating lender. No re-onboarding. No re-KYC per bank. Portfolio, loan history and repayment status live in one place.</p>
+      </div>
+      <div class="module">
+        <div class="module-tag">PRINCIPLE_02</div>
+        <h3>Multi-tenant by design</h3>
+        <p style="margin:0;">Every bank on Kapu is a tenant with its own product configuration: rates, tenors, eligible securities, LTV bands, haircut tables, exposure limits, and routing rules.</p>
+      </div>
+      <div class="module">
+        <div class="module-tag">PRINCIPLE_03</div>
+        <h3>API-native, not file-based</h3>
+        <p style="margin:0;">No CSVs, no overnight batches. Every interaction with DSE/CDS, brokers, CRBs, and partner banks is real-time, idempotent, and signed.</p>
+      </div>
+      <div class="module">
+        <div class="module-tag">PRINCIPLE_04</div>
+        <h3>Open marketplace</h3>
+        <p style="margin:0;">When a shareholder requests a loan, Kapu broadcasts the request to eligible lenders, collects offers, and presents them transparently. The shareholder picks.</p>
+      </div>
+      <div class="module">
+        <div class="module-tag">PRINCIPLE_05</div>
+        <h3>Channel-agnostic</h3>
+        <p style="margin:0;">Mobile app for the full experience. WhatsApp chatbot for low-friction reach. Optionally: USSD, SMS, agent-assisted. Same backend, same outcomes.</p>
+      </div>
+      <div class="module">
+        <div class="module-tag">PRINCIPLE_06</div>
+        <h3>Auditable end-to-end</h3>
+        <p style="margin:0;">Every state change — OTP, eligibility, offer, lien, disbursement, repayment — is event-sourced and tamper-evident, ready for both internal audit and regulatory inspection.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 56px;">Who is Kapu for?</h3>
+    <div class="grid-3" style="margin-top: 18px;">
+      <div class="card">
+        <div class="card-icon">👤</div>
+        <h4>Shareholders</h4>
+        <p style="margin:0;font-size:0.92rem;">Anyone holding DSE-listed securities through a CDS account who wants to unlock liquidity without selling their position.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏦</div>
+        <h4>Banks &amp; non-bank lenders</h4>
+        <p style="margin:0;font-size:0.92rem;">Institutions wanting to offer a securities-backed product without building the full broker/CDS/CRB integration stack themselves.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h4>Brokers &amp; CDS</h4>
+        <p style="margin:0;font-size:0.92rem;">Counterparties who benefit from a single, standardised request channel for portfolio queries and lien instructions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ JOURNEY ═══════════════ -->
+<section id="journey">
+  <div class="wrap">
+    <div class="section-eyebrow">03 · User Journey</div>
+    <h2>From "I have shares" to "money in my account" — in five steps.</h2>
+    <p class="section-lead">
+      The shareholder experience is intentionally minimal. Kapu does the heavy lifting in the
+      background; the user only ever sees what they need to decide on.
+    </p>
+
+    <div class="flow-stage">
+      <h3 style="margin-bottom: 28px;">Onboarding &amp; first-loan flow</h3>
+      <div class="flow-row">
+        <div class="flow-step">
+          <div class="flow-step-num">1</div>
+          <div class="flow-step-title">Enter CDS account</div>
+          <p class="flow-step-desc">Shareholder downloads the Kapu app (or messages the WhatsApp bot) and enters their CDS account number.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <div class="flow-step-title">Verify with OTP</div>
+          <p class="flow-step-desc">Kapu cross-checks the CDS account, finds the linked phone number, and dispatches an OTP. Shareholder enters it.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <div class="flow-step-title">See your portfolio</div>
+          <p class="flow-step-desc">Real-time pull of all holdings: shares, bonds, units. Live valuation, eligible-as-collateral flag per security.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">4</div>
+          <div class="flow-step-title">Request a loan</div>
+          <p class="flow-step-desc">Enter desired amount and tenor. Kapu calculates max eligible amount and broadcasts to participating banks.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">5</div>
+          <div class="flow-step-title">Pick an offer, sign, get funds</div>
+          <p class="flow-step-desc">Compare bank offers side-by-side. Tap to accept. Digital signature, lien marked at CDS, money lands.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 64px;">The returning-user flow</h3>
+    <p>Once a shareholder is on Kapu, every subsequent interaction is faster. The CDS account is already verified, the credit profile is already scored, and outstanding loans are visible at a glance.</p>
+
+    <div class="flow-stage">
+      <div class="flow-row" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="flow-step">
+          <div class="flow-step-num">A</div>
+          <div class="flow-step-title">Open Kapu</div>
+          <p class="flow-step-desc">Biometric / PIN authentication. Dashboard loads with portfolio value, active loans, next repayment date.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">B</div>
+          <div class="flow-step-title">View status</div>
+          <p class="flow-step-desc">See loan balance, accrued interest, days to next instalment, lien-locked securities, free portfolio value.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">C</div>
+          <div class="flow-step-title">Act</div>
+          <p class="flow-step-desc">Repay (early or scheduled), top up, request a new loan against free shares, or initiate early loan closure.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">D</div>
+          <div class="flow-step-title">Confirm</div>
+          <p class="flow-step-desc">Each action is confirmed with a digital signature and reflected immediately across Kapu and the partner bank's LMS.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">↳ Universality, in practice</div>
+      <p style="margin: 0;">
+        A shareholder can have a loan with <strong>Bank A</strong> and a separate loan with <strong>Bank B</strong>
+        at the same time, against different parts of their portfolio — and manage both from the same Kapu screen.
+        Each lien is tracked independently at CDS; each repayment routes to the correct LMS.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ KEY SCREENS ═══════════════ -->
+<section id="screens" style="background: var(--ink-50);">
+  <div class="wrap">
+    <div class="section-eyebrow">04 · Key Screens</div>
+    <h2>What the shareholder actually sees.</h2>
+    <p class="section-lead">Indicative mobile screens illustrating the four pivotal moments of the journey. Final design is subject to UX research and accessibility testing.</p>
+
+    <div class="phone-grid" style="margin-top: 48px;">
+      <!-- SCREEN 1: Onboarding -->
+      <div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="ps-header">
+              <div class="ps-logo">Kapu</div>
+              <div style="font-size:0.6rem;color:var(--ink-500);">9:41</div>
+            </div>
+            <div style="margin-top:auto;margin-bottom:auto;">
+              <div style="font-family:var(--font-display);font-weight:700;font-size:1rem;text-align:center;margin-bottom:4px;">Welcome to Kapu</div>
+              <div style="font-size:0.65rem;color:var(--ink-600);text-align:center;margin-bottom:14px;">Enter your CDS account to begin.</div>
+              <div class="ps-input">CDS Account Number</div>
+              <div style="height:6px;"></div>
+              <div class="ps-input" style="color:var(--ink-900);font-weight:500;">600-204-99812</div>
+              <div style="height:14px;"></div>
+              <div class="ps-btn">Continue</div>
+              <div style="font-size:0.55rem;text-align:center;margin-top:10px;color:var(--ink-500);">By continuing, you agree to share your portfolio with Kapu.</div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-caption">1 · Enter CDS account</div>
+      </div>
+
+      <!-- SCREEN 2: OTP -->
+      <div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="ps-header">
+              <div class="ps-logo">Kapu</div>
+              <div style="font-size:0.6rem;color:var(--ink-500);">9:41</div>
+            </div>
+            <div style="margin-top:auto;margin-bottom:auto;">
+              <div style="font-family:var(--font-display);font-weight:700;font-size:1rem;text-align:center;margin-bottom:4px;">Verify it's you</div>
+              <div style="font-size:0.6rem;color:var(--ink-600);text-align:center;margin-bottom:14px;">Code sent to ••••&nbsp;0742</div>
+              <div class="ps-otp">
+                <span class="active">8</span><span class="active">2</span><span class="active">5</span><span class="active">1</span><span>·</span><span>·</span>
+              </div>
+              <div style="height:14px;"></div>
+              <div class="ps-btn">Verify</div>
+              <div style="font-size:0.55rem;text-align:center;margin-top:10px;color:var(--ink-500);">Resend in 0:38</div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-caption">2 · OTP confirmation</div>
+      </div>
+
+      <!-- SCREEN 3: Portfolio Dashboard -->
+      <div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="ps-header">
+              <div class="ps-logo">Kapu</div>
+              <div style="font-size:0.6rem;color:var(--ink-500);">●●●</div>
+            </div>
+            <div class="ps-card primary">
+              <div class="ps-label">Portfolio Value</div>
+              <div class="ps-value">TZS 14,820,500</div>
+              <div class="ps-row" style="margin-top:6px;">
+                <div class="ps-label">Free for collateral</div>
+                <div style="font-size:0.65rem;font-weight:600;">TZS 9,200,000</div>
+              </div>
+            </div>
+            <div style="font-size:0.6rem;font-weight:600;color:var(--ink-500);margin-top:4px;">HOLDINGS</div>
+            <div class="ps-card">
+              <div class="ps-row"><span style="font-weight:600;">CRDB</span><span class="ps-pill">Eligible</span></div>
+              <div class="ps-row"><span style="font-size:0.6rem;color:var(--ink-500);">2,400 shares</span><span style="font-family:var(--font-mono);font-weight:600;font-size:0.65rem;">TZS 4.2M</span></div>
+            </div>
+            <div class="ps-card">
+              <div class="ps-row"><span style="font-weight:600;">NMB</span><span class="ps-pill">Eligible</span></div>
+              <div class="ps-row"><span style="font-size:0.6rem;color:var(--ink-500);">1,150 shares</span><span style="font-family:var(--font-mono);font-weight:600;font-size:0.65rem;">TZS 5.0M</span></div>
+            </div>
+            <div class="ps-card">
+              <div class="ps-row"><span style="font-weight:600;">TBL</span><span class="ps-pill" style="background:#fde9eb;color:#c0392b;">Lien</span></div>
+              <div class="ps-row"><span style="font-size:0.6rem;color:var(--ink-500);">3,000 shares</span><span style="font-family:var(--font-mono);font-weight:600;font-size:0.65rem;">TZS 5.6M</span></div>
+            </div>
+            <div class="ps-btn" style="margin-top:auto;">+ Request a Loan</div>
+          </div>
+        </div>
+        <div class="phone-caption">3 · Portfolio dashboard</div>
+      </div>
+
+      <!-- SCREEN 4: Bank offers -->
+      <div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="ps-header">
+              <div class="ps-logo">Kapu</div>
+              <div style="font-size:0.6rem;color:var(--ink-500);">←</div>
+            </div>
+            <div style="font-family:var(--font-display);font-weight:700;font-size:0.85rem;">Choose your lender</div>
+            <div style="font-size:0.6rem;color:var(--ink-600);margin-bottom:4px;">For TZS 5,000,000 · 12 months</div>
+            <div class="ps-bank selected">
+              <div>
+                <div class="ps-bank-name">Mwanga Hakika</div>
+                <div style="font-size:0.55rem;color:var(--ink-500);">STP · Disburse in ~2 min</div>
+              </div>
+              <div class="ps-bank-rate">14.5%</div>
+            </div>
+            <div class="ps-bank">
+              <div>
+                <div class="ps-bank-name">CRDB Bank</div>
+                <div style="font-size:0.55rem;color:var(--ink-500);">STP · Disburse in ~5 min</div>
+              </div>
+              <div class="ps-bank-rate">15.0%</div>
+            </div>
+            <div class="ps-bank">
+              <div>
+                <div class="ps-bank-name">NMB</div>
+                <div style="font-size:0.55rem;color:var(--ink-500);">Manual review · ~30 min</div>
+              </div>
+              <div class="ps-bank-rate">13.9%</div>
+            </div>
+            <div class="ps-bank">
+              <div>
+                <div class="ps-bank-name">Stanbic</div>
+                <div style="font-size:0.55rem;color:var(--ink-500);">STP · Disburse in ~3 min</div>
+              </div>
+              <div class="ps-bank-rate">15.5%</div>
+            </div>
+            <div class="ps-btn" style="margin-top:auto;">Accept &amp; Sign</div>
+          </div>
+        </div>
+        <div class="phone-caption">4 · Loan marketplace</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 56px;">
+      <div class="callout-title">↳ The WhatsApp variant</div>
+      <p style="margin: 0;">The same flow renders as a structured chat conversation: Kapu prompts for the CDS account, sends the OTP via SMS, then walks the shareholder through portfolio summary, loan request, offer comparison (rendered as numbered list buttons), and signature confirmation. Functionally identical, optimised for low-bandwidth reach.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ MODULES ═══════════════ -->
+<section id="modules">
+  <div class="wrap">
+    <div class="section-eyebrow">05 · Platform Modules</div>
+    <h2>The building blocks of Kapu.</h2>
+    <p class="section-lead">
+      Each module is independently deployable, owns a clean bounded context, and communicates over
+      well-defined internal APIs and events. Together they make up the Kapu platform.
+    </p>
+
+    <div class="grid-3" style="margin-top: 36px;">
+      <div class="module">
+        <div class="module-tag">M01 · IDENTITY &amp; ACCESS</div>
+        <h3>Identity &amp; Onboarding</h3>
+        <p style="margin:0 0 10px;">Owns the shareholder's Kapu account: CDS account verification, OTP issuance, KYC capture, biometric/PIN setup, session and device management.</p>
+        <ul class="module-list">
+          <li>CDS account &harr; mobile number bind</li>
+          <li>OTP issuance &amp; rate-limiting</li>
+          <li>KYC document capture &amp; OCR</li>
+          <li>Re-authentication policies</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-tag">M02 · PORTFOLIO</div>
+        <h3>Portfolio &amp; Valuation</h3>
+        <p style="margin:0 0 10px;">Real-time view of the shareholder's holdings via DSE/CDS APIs, with continuous mark-to-market valuation and dynamic haircut application.</p>
+        <ul class="module-list">
+          <li>Holdings sync from CDS</li>
+          <li>Live price feed from DSE</li>
+          <li>Per-bank eligibility filtering</li>
+          <li>Free vs lien-locked tracking</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-tag">M03 · ELIGIBILITY ENGINE</div>
+        <h3>Eligibility &amp; Risk Engine</h3>
+        <p style="margin:0 0 10px;">Computes maximum eligible loan, margin requirements, allowable tenor and interest band. Per-bank rule sets, per-instrument LTV and haircut tables.</p>
+        <ul class="module-list">
+          <li>LTV &amp; haircut tables per tenant</li>
+          <li>Whitelist of eligible securities</li>
+          <li>Volatility-adjusted dynamic haircuts</li>
+          <li>Tenor &amp; margin calculations</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-tag">M04 · MARKETPLACE</div>
+        <h3>Loan Marketplace</h3>
+        <p style="margin:0 0 10px;">When a shareholder requests a loan, this module fans out the request to eligible banks, collects offers, and presents them for selection.</p>
+        <ul class="module-list">
+          <li>Offer fan-out &amp; aggregation</li>
+          <li>Side-by-side offer comparison</li>
+          <li>Offer expiry &amp; refresh</li>
+          <li>Bank-level routing rules</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-tag">M05 · ORIGINATION</div>
+        <h3>Loan Origination</h3>
+        <p style="margin:0 0 10px;">Once a shareholder accepts an offer, this module orchestrates credit checks, agreement generation, e-signature, lien marking, and disbursement instruction.</p>
+        <ul class="module-list">
+          <li>CRB check via integration layer</li>
+          <li>Auto loan-agreement generation</li>
+          <li>E-signature / digital execution</li>
+          <li>STP vs manual review routing</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-tag">M06 · COLLATERAL</div>
+        <h3>Collateral Lien Management</h3>
+        <p style="margin:0 0 10px;">Coordinates lien placement and release with brokers and CDS. Maintains the authoritative ledger of which securities are locked, for whom, against which loan.</p>
+        <ul class="module-list">
+          <li>Lien instructions to broker/CDS</li>
+          <li>Multi-bank lien tracking</li>
+          <li>Lien release on full repayment</li>
+          <li>Audit trail of all encumbrances</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-tag">M07 · LMS GATEWAY</div>
+        <h3>Bank LMS Connector</h3>
+        <p style="margin:0 0 10px;">Universal connector that lets each bank plug their core banking and loan management system into Kapu via standard APIs. The bank's "edge" of Kapu.</p>
+        <ul class="module-list">
+          <li>Standard Kapu LMS API contract</li>
+          <li>Per-bank product configuration</li>
+          <li>Disbursement instruction outbound</li>
+          <li>Repayment posting inbound</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-tag">M08 · REPAYMENT</div>
+        <h3>Repayment &amp; Servicing</h3>
+        <p style="margin:0 0 10px;">Handles scheduled instalments, early repayment, partial top-ups, accrued interest tracking, and forced-liquidation triggers in default scenarios.</p>
+        <ul class="module-list">
+          <li>Schedule generation per offer</li>
+          <li>Early-liquidation flow</li>
+          <li>Default detection &amp; aging</li>
+          <li>Auto-liquidation trigger to broker</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-tag">M09 · NOTIFICATIONS</div>
+        <h3>Notifications &amp; Comms</h3>
+        <p style="margin:0 0 10px;">Multi-channel orchestration of all shareholder, bank, and operational notifications: push, SMS, email, WhatsApp, in-app banner.</p>
+        <ul class="module-list">
+          <li>Templated, multilingual content</li>
+          <li>Channel preference &amp; fallback</li>
+          <li>Delivery tracking &amp; retries</li>
+          <li>Quiet-hours &amp; throttling</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-tag">M10 · CHATBOT</div>
+        <h3>WhatsApp Chatbot</h3>
+        <p style="margin:0 0 10px;">A second front-end for Kapu, exposing the same capabilities as the mobile app through structured WhatsApp conversations and interactive messages.</p>
+        <ul class="module-list">
+          <li>Intent classification &amp; flow nav</li>
+          <li>Interactive list &amp; button messages</li>
+          <li>Stateful conversation context</li>
+          <li>Hand-off to human support</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-tag">M11 · ADMIN &amp; OPS</div>
+        <h3>Admin &amp; Operations Console</h3>
+        <p style="margin:0 0 10px;">Internal back-office: tenant management, product configuration, manual review queues, dispute handling, reporting and dashboards.</p>
+        <ul class="module-list">
+          <li>Bank tenant onboarding &amp; config</li>
+          <li>Manual loan review queue</li>
+          <li>Reconciliation dashboards</li>
+          <li>Audit log explorer</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-tag">M12 · LEDGER &amp; AUDIT</div>
+        <h3>Event Ledger</h3>
+        <p style="margin:0 0 10px;">Append-only event store capturing every state transition across the platform. The single source of truth for audit, reconciliation, and regulatory reporting.</p>
+        <ul class="module-list">
+          <li>Event-sourced state changes</li>
+          <li>Tamper-evident hash chain</li>
+          <li>Replay &amp; projection support</li>
+          <li>Regulator-ready exports</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PROCESS FLOWS ═══════════════ -->
+<section id="process" style="background: var(--ink-50);">
+  <div class="wrap">
+    <div class="section-eyebrow">06 · Process Flows</div>
+    <h2>How the modules dance together.</h2>
+    <p class="section-lead">Three flows show the full life-cycle: registration, loan origination, and repayment / closure.</p>
+
+    <h3 style="margin-top: 48px;">Flow A · Registration &amp; Onboarding</h3>
+    <div class="arch-stage">
+      <svg viewBox="0 0 1100 280" style="width:100%;height:auto;display:block;font-family:var(--font);">
+        <defs>
+          <linearGradient id="boxGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#faeefb"/>
+          </linearGradient>
+          <linearGradient id="purpleGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#b636bd"/>
+            <stop offset="100%" stop-color="#4d1352"/>
+          </linearGradient>
+          <marker id="arrow1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a1f80"/>
+          </marker>
+        </defs>
+
+        <!-- Lanes -->
+        <text x="20" y="40" font-size="11" font-weight="700" fill="#6b6275" letter-spacing="1">SHAREHOLDER</text>
+        <text x="20" y="120" font-size="11" font-weight="700" fill="#6b6275" letter-spacing="1">KAPU</text>
+        <text x="20" y="220" font-size="11" font-weight="700" fill="#6b6275" letter-spacing="1">CDS / DSE</text>
+        <line x1="140" y1="20" x2="140" y2="260" stroke="#ebe8ee" stroke-width="1"/>
+        <line x1="140" y1="60" x2="1080" y2="60" stroke="#ebe8ee" stroke-dasharray="3 3"/>
+        <line x1="140" y1="160" x2="1080" y2="160" stroke="#ebe8ee" stroke-dasharray="3 3"/>
+
+        <!-- Step boxes -->
+        <g>
+          <rect x="160" y="20" width="140" height="50" rx="10" fill="url(#boxGrad)" stroke="#e6b0eb"/>
+          <text x="230" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">Enter CDS #</text>
+          <text x="230" y="56" text-anchor="middle" font-size="9.5" fill="#6b6275">Mobile / WhatsApp</text>
+        </g>
+
+        <g>
+          <rect x="320" y="100" width="160" height="50" rx="10" fill="url(#purpleGrad)" />
+          <text x="400" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Verify CDS exists</text>
+          <text x="400" y="138" text-anchor="middle" font-size="9.5" fill="#f3d8f5">Resolve linked phone</text>
+        </g>
+
+        <g>
+          <rect x="500" y="200" width="160" height="50" rx="10" fill="url(#boxGrad)" stroke="#e6b0eb"/>
+          <text x="580" y="220" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">CDS API lookup</text>
+          <text x="580" y="236" text-anchor="middle" font-size="9.5" fill="#6b6275">Returns owner, MSISDN</text>
+        </g>
+
+        <g>
+          <rect x="500" y="100" width="160" height="50" rx="10" fill="url(#purpleGrad)"/>
+          <text x="580" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Issue OTP</text>
+          <text x="580" y="138" text-anchor="middle" font-size="9.5" fill="#f3d8f5">SMS to owner phone</text>
+        </g>
+
+        <g>
+          <rect x="680" y="20" width="140" height="50" rx="10" fill="url(#boxGrad)" stroke="#e6b0eb"/>
+          <text x="750" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">Enter OTP</text>
+          <text x="750" y="56" text-anchor="middle" font-size="9.5" fill="#6b6275">+ KYC capture</text>
+        </g>
+
+        <g>
+          <rect x="840" y="100" width="160" height="50" rx="10" fill="url(#purpleGrad)"/>
+          <text x="920" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Account created</text>
+          <text x="920" y="138" text-anchor="middle" font-size="9.5" fill="#f3d8f5">Session issued</text>
+        </g>
+
+        <!-- Connectors -->
+        <path d="M 230 70 Q 230 90 320 110" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+        <path d="M 480 130 L 500 130" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+        <path d="M 580 200 L 580 150" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)" stroke-dasharray="0"/>
+        <path d="M 580 200 L 580 150" fill="none" stroke="#7a1f80" stroke-width="0" />
+        <path d="M 660 125 Q 700 100 680 50" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+        <path d="M 820 50 Q 850 80 840 110" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+      </svg>
+    </div>
+
+    <h3 style="margin-top: 64px;">Flow B · Loan Origination &amp; Disbursement</h3>
+    <div class="arch-stage">
+      <svg viewBox="0 0 1200 360" style="width:100%;height:auto;display:block;font-family:var(--font);">
+        <defs>
+          <linearGradient id="boxGrad2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#faeefb"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Lanes -->
+        <text x="20" y="40" font-size="11" font-weight="700" fill="#6b6275" letter-spacing="1">SHAREHOLDER</text>
+        <text x="20" y="115" font-size="11" font-weight="700" fill="#6b6275" letter-spacing="1">KAPU CORE</text>
+        <text x="20" y="225" font-size="11" font-weight="700" fill="#6b6275" letter-spacing="1">BANKS (LMS)</text>
+        <text x="20" y="305" font-size="11" font-weight="700" fill="#6b6275" letter-spacing="1">CDS / CRB</text>
+
+        <line x1="140" y1="20" x2="140" y2="340" stroke="#ebe8ee"/>
+        <line x1="140" y1="60" x2="1180" y2="60" stroke="#ebe8ee" stroke-dasharray="3 3"/>
+        <line x1="140" y1="170" x2="1180" y2="170" stroke="#ebe8ee" stroke-dasharray="3 3"/>
+        <line x1="140" y1="260" x2="1180" y2="260" stroke="#ebe8ee" stroke-dasharray="3 3"/>
+
+        <!-- Step 1: User requests loan -->
+        <g>
+          <rect x="160" y="20" width="135" height="50" rx="10" fill="url(#boxGrad2)" stroke="#e6b0eb"/>
+          <text x="227" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">Request loan</text>
+          <text x="227" y="56" text-anchor="middle" font-size="9.5" fill="#6b6275">Amount + tenor</text>
+        </g>
+
+        <!-- Step 2: Eligibility -->
+        <g>
+          <rect x="320" y="100" width="150" height="50" rx="10" fill="url(#purpleGrad)"/>
+          <text x="395" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Eligibility engine</text>
+          <text x="395" y="138" text-anchor="middle" font-size="9.5" fill="#f3d8f5">Max amount, haircut</text>
+        </g>
+
+        <!-- Step 3: Marketplace fan-out -->
+        <g>
+          <rect x="490" y="100" width="150" height="50" rx="10" fill="url(#purpleGrad)"/>
+          <text x="565" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Marketplace</text>
+          <text x="565" y="138" text-anchor="middle" font-size="9.5" fill="#f3d8f5">Fan-out request</text>
+        </g>
+
+        <!-- Bank offers -->
+        <g>
+          <rect x="490" y="195" width="65" height="40" rx="8" fill="url(#boxGrad2)" stroke="#e6b0eb"/>
+          <text x="522" y="213" text-anchor="middle" font-size="10" font-weight="700" fill="#14101a">Bank A</text>
+          <text x="522" y="226" text-anchor="middle" font-size="9" fill="#6b6275">14.5%</text>
+        </g>
+        <g>
+          <rect x="565" y="195" width="65" height="40" rx="8" fill="url(#boxGrad2)" stroke="#e6b0eb"/>
+          <text x="597" y="213" text-anchor="middle" font-size="10" font-weight="700" fill="#14101a">Bank B</text>
+          <text x="597" y="226" text-anchor="middle" font-size="9" fill="#6b6275">15.0%</text>
+        </g>
+
+        <!-- Step 4: Choose offer -->
+        <g>
+          <rect x="660" y="20" width="135" height="50" rx="10" fill="url(#boxGrad2)" stroke="#e6b0eb"/>
+          <text x="727" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">Pick offer</text>
+          <text x="727" y="56" text-anchor="middle" font-size="9.5" fill="#6b6275">Sign agreement</text>
+        </g>
+
+        <!-- Step 5: CRB Check -->
+        <g>
+          <rect x="660" y="285" width="120" height="40" rx="8" fill="url(#boxGrad2)" stroke="#e6b0eb"/>
+          <text x="720" y="302" text-anchor="middle" font-size="10" font-weight="700" fill="#14101a">CRB lookup</text>
+          <text x="720" y="316" text-anchor="middle" font-size="9" fill="#6b6275">Credit score</text>
+        </g>
+
+        <!-- Step 6: Lien marking -->
+        <g>
+          <rect x="800" y="285" width="120" height="40" rx="8" fill="url(#boxGrad2)" stroke="#e6b0eb"/>
+          <text x="860" y="302" text-anchor="middle" font-size="10" font-weight="700" fill="#14101a">CDS lien mark</text>
+          <text x="860" y="316" text-anchor="middle" font-size="9" fill="#6b6275">Securities locked</text>
+        </g>
+
+        <!-- Step 7: Loan booked -->
+        <g>
+          <rect x="800" y="195" width="135" height="50" rx="10" fill="url(#boxGrad2)" stroke="#e6b0eb"/>
+          <text x="867" y="215" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">Bank books loan</text>
+          <text x="867" y="231" text-anchor="middle" font-size="9.5" fill="#6b6275">In its core/LMS</text>
+        </g>
+
+        <!-- Step 8: Disbursement -->
+        <g>
+          <rect x="960" y="100" width="150" height="50" rx="10" fill="url(#purpleGrad)"/>
+          <text x="1035" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Disburse to user</text>
+          <text x="1035" y="138" text-anchor="middle" font-size="9.5" fill="#f3d8f5">Funds in account</text>
+        </g>
+
+        <!-- Step 9: confirmation -->
+        <g>
+          <rect x="1020" y="20" width="140" height="50" rx="10" fill="url(#boxGrad2)" stroke="#e6b0eb"/>
+          <text x="1090" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">Loan active</text>
+          <text x="1090" y="56" text-anchor="middle" font-size="9.5" fill="#6b6275">Schedule visible</text>
+        </g>
+
+        <!-- Connectors -->
+        <path d="M 227 70 Q 227 90 320 110" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+        <path d="M 470 125 L 490 125" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+        <path d="M 522 195 L 522 150" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+        <path d="M 597 195 L 597 150" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+        <path d="M 640 110 Q 660 90 660 70" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+        <path d="M 727 70 Q 727 200 720 285" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)" stroke-dasharray="2 3"/>
+        <path d="M 780 305 L 800 305" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+        <path d="M 860 285 L 860 245" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+        <path d="M 935 220 L 960 145" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+        <path d="M 1110 110 Q 1090 90 1090 70" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrow1)"/>
+      </svg>
+    </div>
+
+    <h3 style="margin-top: 64px;">Flow C · Repayment, Early Liquidation &amp; Default</h3>
+    <div class="grid-3" style="margin-top: 24px;">
+      <div class="card">
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <h4>Scheduled instalment</h4>
+        <p style="font-size:0.92rem;margin:0;">On the due date, Kapu prompts the shareholder, debits the linked account (or initiates a wallet/USSD payment), posts the repayment to the lender's LMS, and updates the schedule.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M5 9l7-7 7 7"/></svg>
+        </div>
+        <h4>Early liquidation</h4>
+        <p style="font-size:0.92rem;margin:0;">User taps "Close loan" in Kapu. Outstanding balance + accrued interest is computed in real time, paid in one shot, lien is released at CDS, securities are unlocked.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+        </div>
+        <h4>Default &amp; forced liquidation</h4>
+        <p style="font-size:0.92rem;margin:0;">After the bank's grace period, Kapu instructs the broker to liquidate pledged shares on the DSE. Proceeds settle the outstanding; surplus returns to the shareholder.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ ARCHITECTURE ═══════════════ -->
+<section id="architecture">
+  <div class="wrap">
+    <div class="section-eyebrow">07 · System Architecture</div>
+    <h2>Kapu sits at the centre. Data flows continuously around it.</h2>
+    <p class="section-lead">
+      Kapu is the universal hub. Shareholders connect from the edges (Mobile, WhatsApp). Banks plug
+      in via the LMS API contract. DSE/CDS, brokers, CRBs and payment rails sit on the outer ring.
+      The diagram below shows how data packets — portfolio, OTP, lien, offer, disbursement, repayment — move
+      across the ecosystem in real time.
+    </p>
+
+    <div class="arch-stage" style="padding: 40px 24px;">
+      <svg viewBox="0 0 1100 720" style="width:100%;height:auto;display:block;font-family:var(--font);" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <!-- Gradients -->
+          <radialGradient id="hubGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#d678dc"/>
+            <stop offset="60%" stop-color="#b636bd"/>
+            <stop offset="100%" stop-color="#4d1352"/>
+          </radialGradient>
+          <linearGradient id="nodeGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#f5f3f7"/>
+          </linearGradient>
+          <linearGradient id="bankGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#faeefb"/>
+          </linearGradient>
+
+          <!-- Glow filter -->
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+
+          <!-- ═══ FLOW PATHS (invisible, just for animation) ═══ -->
+          <!-- Mobile <-> Kapu -->
+          <path id="path-mobile" d="M 160 360 L 480 360" />
+          <!-- WhatsApp <-> Kapu -->
+          <path id="path-whatsapp" d="M 160 460 Q 320 460 480 400" />
+          <!-- DSE/CDS <-> Kapu -->
+          <path id="path-cds" d="M 940 160 Q 800 220 620 320" />
+          <path id="path-cds-back" d="M 620 320 Q 800 220 940 160" />
+          <!-- Broker <-> Kapu -->
+          <path id="path-broker" d="M 940 320 Q 820 340 620 360" />
+          <!-- CRB <-> Kapu -->
+          <path id="path-crb" d="M 940 480 Q 820 440 620 400" />
+          <!-- Payment rails -->
+          <path id="path-pay" d="M 940 600 Q 800 540 620 440" />
+
+          <!-- Bank A <-> Kapu -->
+          <path id="path-bankA" d="M 200 100 Q 320 200 480 300" />
+          <!-- Bank B <-> Kapu -->
+          <path id="path-bankB" d="M 440 60 Q 480 200 520 280" />
+          <!-- Bank C <-> Kapu -->
+          <path id="path-bankC" d="M 680 60 Q 620 200 580 280" />
+          <!-- Bank D <-> Kapu -->
+          <path id="path-bankD" d="M 200 660 Q 320 540 480 420" />
+          <!-- Bank E <-> Kapu -->
+          <path id="path-bankE" d="M 440 700 Q 480 560 520 440" />
+          <!-- Bank F <-> Kapu -->
+          <path id="path-bankF" d="M 680 700 Q 620 560 580 440" />
+
+          <!-- Markers -->
+          <marker id="arrEdge" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M0 0 L10 5 L0 10 z" fill="#b3acb8"/>
+          </marker>
+        </defs>
+
+        <!-- ═══ EDGE LINES (the "rails") ═══ -->
+        <g stroke="#d6d2db" stroke-width="1.5" fill="none" stroke-dasharray="3 4">
+          <use href="#path-mobile"/>
+          <use href="#path-whatsapp"/>
+          <use href="#path-cds"/>
+          <use href="#path-broker"/>
+          <use href="#path-crb"/>
+          <use href="#path-pay"/>
+          <use href="#path-bankA"/>
+          <use href="#path-bankB"/>
+          <use href="#path-bankC"/>
+          <use href="#path-bankD"/>
+          <use href="#path-bankE"/>
+          <use href="#path-bankF"/>
+        </g>
+
+        <!-- ═══ KAPU HUB (center) ═══ -->
+        <g>
+          <!-- outer pulse rings -->
+          <circle cx="550" cy="360" r="140" fill="none" stroke="#b636bd" stroke-width="1" opacity="0.15">
+            <animate attributeName="r" from="140" to="180" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" from="0.25" to="0" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="550" cy="360" r="140" fill="none" stroke="#b636bd" stroke-width="1" opacity="0.15">
+            <animate attributeName="r" from="140" to="180" dur="3s" begin="1s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" from="0.25" to="0" dur="3s" begin="1s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="550" cy="360" r="140" fill="none" stroke="#b636bd" stroke-width="1" opacity="0.15">
+            <animate attributeName="r" from="140" to="180" dur="3s" begin="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" from="0.25" to="0" dur="3s" begin="2s" repeatCount="indefinite"/>
+          </circle>
+
+          <!-- main hub -->
+          <circle cx="550" cy="360" r="135" fill="url(#hubGrad)" filter="url(#glow)" opacity="0.95"/>
+          <circle cx="550" cy="360" r="135" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.4"/>
+
+          <!-- KAPU label -->
+          <text x="550" y="335" text-anchor="middle" font-size="14" font-weight="700" fill="#f3d8f5" letter-spacing="3">UNIVERSAL RAIL</text>
+          <text x="550" y="375" text-anchor="middle" font-family="'Google Sans',sans-serif" font-size="44" font-weight="700" fill="#fff" letter-spacing="-1">Kapu</text>
+          <text x="550" y="402" text-anchor="middle" font-size="11" fill="#f3d8f5" opacity="0.85">Identity · Eligibility · Marketplace</text>
+          <text x="550" y="418" text-anchor="middle" font-size="11" fill="#f3d8f5" opacity="0.85">Lien · LMS Gateway · Ledger</text>
+        </g>
+
+        <!-- ═══ EDGE NODES ═══ -->
+        <!-- Channels: left side -->
+        <g>
+          <rect x="50" y="335" width="120" height="56" rx="14" fill="url(#nodeGrad)" stroke="#e6b0eb" stroke-width="1.5"/>
+          <text x="110" y="357" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">📱 Mobile App</text>
+          <text x="110" y="375" text-anchor="middle" font-size="9" fill="#6b6275">iOS · Android</text>
+        </g>
+        <g>
+          <rect x="50" y="430" width="120" height="56" rx="14" fill="url(#nodeGrad)" stroke="#e6b0eb" stroke-width="1.5"/>
+          <text x="110" y="452" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">💬 WhatsApp Bot</text>
+          <text x="110" y="470" text-anchor="middle" font-size="9" fill="#6b6275">Chat-based UX</text>
+        </g>
+
+        <!-- External providers: right side -->
+        <g>
+          <rect x="930" y="130" width="140" height="60" rx="14" fill="url(#nodeGrad)" stroke="#e6b0eb" stroke-width="1.5"/>
+          <text x="1000" y="153" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">📊 DSE / CDS</text>
+          <text x="1000" y="170" text-anchor="middle" font-size="9" fill="#6b6275">Holdings · Prices</text>
+          <text x="1000" y="182" text-anchor="middle" font-size="9" fill="#6b6275">Lien · Liquidate</text>
+        </g>
+        <g>
+          <rect x="930" y="290" width="140" height="60" rx="14" fill="url(#nodeGrad)" stroke="#e6b0eb" stroke-width="1.5"/>
+          <text x="1000" y="313" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">🏛️ Brokers</text>
+          <text x="1000" y="330" text-anchor="middle" font-size="9" fill="#6b6275">Order routing</text>
+          <text x="1000" y="342" text-anchor="middle" font-size="9" fill="#6b6275">Settlement</text>
+        </g>
+        <g>
+          <rect x="930" y="450" width="140" height="60" rx="14" fill="url(#nodeGrad)" stroke="#e6b0eb" stroke-width="1.5"/>
+          <text x="1000" y="473" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">📋 CRB</text>
+          <text x="1000" y="490" text-anchor="middle" font-size="9" fill="#6b6275">Credit Reference</text>
+          <text x="1000" y="502" text-anchor="middle" font-size="9" fill="#6b6275">Score · History</text>
+        </g>
+        <g>
+          <rect x="930" y="570" width="140" height="60" rx="14" fill="url(#nodeGrad)" stroke="#e6b0eb" stroke-width="1.5"/>
+          <text x="1000" y="593" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">💸 Payment Rails</text>
+          <text x="1000" y="610" text-anchor="middle" font-size="9" fill="#6b6275">TIPS · Mobile money</text>
+          <text x="1000" y="622" text-anchor="middle" font-size="9" fill="#6b6275">Card · Bank transfer</text>
+        </g>
+
+        <!-- Banks: top arc -->
+        <g>
+          <rect x="140" y="60" width="120" height="56" rx="14" fill="url(#bankGrad)" stroke="#e6b0eb" stroke-width="1.5"/>
+          <text x="200" y="82" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">🏦 Bank A</text>
+          <text x="200" y="100" text-anchor="middle" font-size="9" fill="#6b6275">LMS · Core</text>
+        </g>
+        <g>
+          <rect x="380" y="20" width="120" height="56" rx="14" fill="url(#bankGrad)" stroke="#e6b0eb" stroke-width="1.5"/>
+          <text x="440" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">🏦 Bank B</text>
+          <text x="440" y="60" text-anchor="middle" font-size="9" fill="#6b6275">LMS · Core</text>
+        </g>
+        <g>
+          <rect x="620" y="20" width="120" height="56" rx="14" fill="url(#bankGrad)" stroke="#e6b0eb" stroke-width="1.5"/>
+          <text x="680" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">🏦 Bank C</text>
+          <text x="680" y="60" text-anchor="middle" font-size="9" fill="#6b6275">LMS · Core</text>
+        </g>
+
+        <!-- Banks: bottom arc -->
+        <g>
+          <rect x="140" y="620" width="120" height="56" rx="14" fill="url(#bankGrad)" stroke="#e6b0eb" stroke-width="1.5"/>
+          <text x="200" y="642" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">🏦 Bank D</text>
+          <text x="200" y="660" text-anchor="middle" font-size="9" fill="#6b6275">LMS · Core</text>
+        </g>
+        <g>
+          <rect x="380" y="660" width="120" height="56" rx="14" fill="url(#bankGrad)" stroke="#e6b0eb" stroke-width="1.5"/>
+          <text x="440" y="682" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">🏦 Bank E</text>
+          <text x="440" y="700" text-anchor="middle" font-size="9" fill="#6b6275">LMS · Core</text>
+        </g>
+        <g>
+          <rect x="620" y="660" width="120" height="56" rx="14" fill="url(#bankGrad)" stroke="#e6b0eb" stroke-width="1.5"/>
+          <text x="680" y="682" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">🏦 Bank F</text>
+          <text x="680" y="700" text-anchor="middle" font-size="9" fill="#6b6275">LMS · Core</text>
+        </g>
+
+        <!-- ═══ ANIMATED DATA PACKETS ═══ -->
+
+        <!-- Mobile → Kapu (loan request) -->
+        <g>
+          <circle r="6" fill="#b636bd" filter="url(#glow)">
+            <animateMotion dur="3s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#path-mobile"/>
+            </animateMotion>
+          </circle>
+          <text font-size="9" font-weight="700" fill="#4d1352">
+            <animateMotion dur="3s" repeatCount="indefinite">
+              <mpath href="#path-mobile"/>
+            </animateMotion>
+            <tspan dx="10" dy="-8">Loan req</tspan>
+          </text>
+        </g>
+
+        <!-- WhatsApp → Kapu (CDS query) -->
+        <g>
+          <circle r="6" fill="#2bb673" filter="url(#glow)">
+            <animateMotion dur="4s" repeatCount="indefinite">
+              <mpath href="#path-whatsapp"/>
+            </animateMotion>
+          </circle>
+          <text font-size="9" font-weight="700" fill="#1d6e47">
+            <animateMotion dur="4s" repeatCount="indefinite">
+              <mpath href="#path-whatsapp"/>
+            </animateMotion>
+            <tspan dx="10" dy="-8">CDS query</tspan>
+          </text>
+        </g>
+
+        <!-- Kapu → CDS (lien instr) -->
+        <g>
+          <circle r="6" fill="#b636bd" filter="url(#glow)">
+            <animateMotion dur="3.5s" repeatCount="indefinite">
+              <mpath href="#path-cds-back"/>
+            </animateMotion>
+          </circle>
+          <text font-size="9" font-weight="700" fill="#4d1352">
+            <animateMotion dur="3.5s" repeatCount="indefinite">
+              <mpath href="#path-cds-back"/>
+            </animateMotion>
+            <tspan dx="10" dy="-8">Lien instr</tspan>
+          </text>
+        </g>
+
+        <!-- CDS → Kapu (holdings) -->
+        <g>
+          <circle r="6" fill="#ffb547" filter="url(#glow)">
+            <animateMotion dur="3.5s" begin="1.5s" repeatCount="indefinite">
+              <mpath href="#path-cds"/>
+            </animateMotion>
+          </circle>
+          <text font-size="9" font-weight="700" fill="#a06800">
+            <animateMotion dur="3.5s" begin="1.5s" repeatCount="indefinite">
+              <mpath href="#path-cds"/>
+            </animateMotion>
+            <tspan dx="10" dy="-8">Holdings</tspan>
+          </text>
+        </g>
+
+        <!-- Broker → Kapu (lien confirmed) -->
+        <g>
+          <circle r="6" fill="#2bb673" filter="url(#glow)">
+            <animateMotion dur="3s" begin="0.8s" repeatCount="indefinite">
+              <mpath href="#path-broker"/>
+            </animateMotion>
+          </circle>
+          <text font-size="9" font-weight="700" fill="#1d6e47">
+            <animateMotion dur="3s" begin="0.8s" repeatCount="indefinite">
+              <mpath href="#path-broker"/>
+            </animateMotion>
+            <tspan dx="10" dy="-8">Lien OK</tspan>
+          </text>
+        </g>
+
+        <!-- CRB → Kapu (score) -->
+        <g>
+          <circle r="6" fill="#4a90e2" filter="url(#glow)">
+            <animateMotion dur="3.2s" begin="0.5s" repeatCount="indefinite">
+              <mpath href="#path-crb"/>
+            </animateMotion>
+          </circle>
+          <text font-size="9" font-weight="700" fill="#1c4d8a">
+            <animateMotion dur="3.2s" begin="0.5s" repeatCount="indefinite">
+              <mpath href="#path-crb"/>
+            </animateMotion>
+            <tspan dx="10" dy="-8">Credit score</tspan>
+          </text>
+        </g>
+
+        <!-- Payment rail → user (disbursement) -->
+        <g>
+          <circle r="7" fill="#ffb547" filter="url(#glow)">
+            <animateMotion dur="3.8s" begin="1s" repeatCount="indefinite">
+              <mpath href="#path-pay"/>
+            </animateMotion>
+          </circle>
+          <text font-size="9" font-weight="700" fill="#a06800">
+            <animateMotion dur="3.8s" begin="1s" repeatCount="indefinite">
+              <mpath href="#path-pay"/>
+            </animateMotion>
+            <tspan dx="10" dy="-8">Disburse</tspan>
+          </text>
+        </g>
+
+        <!-- Bank A offer -->
+        <g>
+          <circle r="6" fill="#b636bd" filter="url(#glow)">
+            <animateMotion dur="3s" repeatCount="indefinite">
+              <mpath href="#path-bankA"/>
+            </animateMotion>
+          </circle>
+          <text font-size="9" font-weight="700" fill="#4d1352">
+            <animateMotion dur="3s" repeatCount="indefinite">
+              <mpath href="#path-bankA"/>
+            </animateMotion>
+            <tspan dx="10" dy="-8">Offer</tspan>
+          </text>
+        </g>
+
+        <!-- Bank B offer -->
+        <g>
+          <circle r="6" fill="#b636bd" filter="url(#glow)">
+            <animateMotion dur="3.4s" begin="0.7s" repeatCount="indefinite">
+              <mpath href="#path-bankB"/>
+            </animateMotion>
+          </circle>
+        </g>
+        <!-- Bank C offer -->
+        <g>
+          <circle r="6" fill="#b636bd" filter="url(#glow)">
+            <animateMotion dur="3.2s" begin="1.4s" repeatCount="indefinite">
+              <mpath href="#path-bankC"/>
+            </animateMotion>
+          </circle>
+        </g>
+
+        <!-- Bank D repayment -->
+        <g>
+          <circle r="6" fill="#2bb673" filter="url(#glow)">
+            <animateMotion dur="3.1s" begin="0.3s" repeatCount="indefinite">
+              <mpath href="#path-bankD"/>
+            </animateMotion>
+          </circle>
+          <text font-size="9" font-weight="700" fill="#1d6e47">
+            <animateMotion dur="3.1s" begin="0.3s" repeatCount="indefinite">
+              <mpath href="#path-bankD"/>
+            </animateMotion>
+            <tspan dx="10" dy="-8">Repay</tspan>
+          </text>
+        </g>
+
+        <!-- Bank E -->
+        <g>
+          <circle r="6" fill="#4a90e2" filter="url(#glow)">
+            <animateMotion dur="3.5s" begin="1.1s" repeatCount="indefinite">
+              <mpath href="#path-bankE"/>
+            </animateMotion>
+          </circle>
+        </g>
+        <!-- Bank F -->
+        <g>
+          <circle r="6" fill="#4a90e2" filter="url(#glow)">
+            <animateMotion dur="3.3s" begin="1.8s" repeatCount="indefinite">
+              <mpath href="#path-bankF"/>
+            </animateMotion>
+          </circle>
+        </g>
+
+      </svg>
+
+      <div class="arch-legend">
+        <div class="arch-legend-item"><span class="legend-dot" style="background:#b636bd;"></span> User &amp; offer flows</div>
+        <div class="arch-legend-item"><span class="legend-dot" style="background:#2bb673;"></span> Confirmations &amp; repayments</div>
+        <div class="arch-legend-item"><span class="legend-dot" style="background:#ffb547;"></span> Holdings &amp; disbursements</div>
+        <div class="arch-legend-item"><span class="legend-dot" style="background:#4a90e2;"></span> Credit &amp; risk data</div>
+        <div class="arch-legend-item"><span style="font-size:0.8rem;color:var(--ink-500);">All packets traverse signed, mTLS-secured channels.</span></div>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 64px;">Architectural layers</h3>
+    <div class="grid-3" style="margin-top: 18px;">
+      <div class="card">
+        <div class="module-tag" style="margin-bottom:6px;font-family:var(--font-mono);font-size:0.78rem;color:var(--kapu-primary-dark);">LAYER · CHANNELS</div>
+        <h4>Edge / Channels</h4>
+        <p style="margin:0;font-size:0.92rem;">Mobile (iOS, Android), WhatsApp Business API, optionally USSD &amp; SMS fall-back, web admin console, and a bank-facing partner portal.</p>
+      </div>
+      <div class="card">
+        <div class="module-tag" style="margin-bottom:6px;font-family:var(--font-mono);font-size:0.78rem;color:var(--kapu-primary-dark);">LAYER · API GATEWAY</div>
+        <h4>API Gateway &amp; BFF</h4>
+        <p style="margin:0;font-size:0.92rem;">Edge auth, rate limiting, request shaping. Backend-for-frontend tailoring per channel. mTLS for partner traffic, OAuth2/PKCE for user channels.</p>
+      </div>
+      <div class="card">
+        <div class="module-tag" style="margin-bottom:6px;font-family:var(--font-mono);font-size:0.78rem;color:var(--kapu-primary-dark);">LAYER · CORE SERVICES</div>
+        <h4>Core platform services</h4>
+        <p style="margin:0;font-size:0.92rem;">Identity, Portfolio, Eligibility, Marketplace, Origination, Collateral, Repayment, Notifications, Ledger — each independently deployable.</p>
+      </div>
+      <div class="card">
+        <div class="module-tag" style="margin-bottom:6px;font-family:var(--font-mono);font-size:0.78rem;color:var(--kapu-primary-dark);">LAYER · INTEGRATION</div>
+        <h4>Integration / connectors</h4>
+        <p style="margin:0;font-size:0.92rem;">Outbound adapters for DSE/CDS, brokers, CRBs, payment rails, e-signature providers, KYC document scanners, and bank LMS endpoints.</p>
+      </div>
+      <div class="card">
+        <div class="module-tag" style="margin-bottom:6px;font-family:var(--font-mono);font-size:0.78rem;color:var(--kapu-primary-dark);">LAYER · DATA</div>
+        <h4>Data &amp; event store</h4>
+        <p style="margin:0;font-size:0.92rem;">Event-sourced ledger, transactional stores per service, analytical warehouse, encrypted document store, and audit trail with hash-chain integrity.</p>
+      </div>
+      <div class="card">
+        <div class="module-tag" style="margin-bottom:6px;font-family:var(--font-mono);font-size:0.78rem;color:var(--kapu-primary-dark);">LAYER · OBSERVABILITY</div>
+        <h4>Security &amp; observability</h4>
+        <p style="margin:0;font-size:0.92rem;">Centralised logging, distributed tracing, metrics. Secrets in HSM/KMS. SIEM, fraud signals, anomaly detection on transaction streams.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ INTEGRATION ═══════════════ -->
+<section id="integrations" style="background: var(--ink-50);">
+  <div class="wrap">
+    <div class="section-eyebrow">08 · API &amp; Integration Layer</div>
+    <h2>Standardised contracts. Pluggable adapters.</h2>
+    <p class="section-lead">
+      Every external system that Kapu talks to has a defined adapter. New banks, new brokers, new
+      payment providers slot in by implementing the relevant Kapu contract — no core changes required.
+    </p>
+
+    <div class="grid-2" style="margin-top: 36px;">
+      <div class="card">
+        <h3>Bank LMS API (inbound &amp; outbound)</h3>
+        <p style="font-size:0.92rem;color:var(--ink-700);">The contract every participating bank implements to plug into Kapu. Standardised JSON over HTTPS with mTLS, signed payloads (HS256/RS256), and idempotency keys on all writes.</p>
+        <div class="entity" style="margin-top:14px;">
+          <div class="entity-head">Endpoints (illustrative)</div>
+          <div class="entity-row"><span class="entity-field">POST /offers/quote</span><span class="entity-type">Kapu → Bank</span></div>
+          <div class="entity-row"><span class="entity-field">POST /loans/book</span><span class="entity-type">Kapu → Bank</span></div>
+          <div class="entity-row"><span class="entity-field">POST /loans/disburse</span><span class="entity-type">Kapu → Bank</span></div>
+          <div class="entity-row"><span class="entity-field">POST /repayments</span><span class="entity-type">Bank → Kapu</span></div>
+          <div class="entity-row"><span class="entity-field">POST /loans/close</span><span class="entity-type">Bank → Kapu</span></div>
+          <div class="entity-row"><span class="entity-field">GET  /loans/{id}</span><span class="entity-type">Kapu ↔ Bank</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>DSE / CDS Adapter</h3>
+        <p style="font-size:0.92rem;color:var(--ink-700);">Bridges Kapu to the Central Depository System: portfolio retrieval, real-time pricing, lien marking and release, forced-liquidation instructions.</p>
+        <div class="entity" style="margin-top:14px;">
+          <div class="entity-head">Operations</div>
+          <div class="entity-row"><span class="entity-field">resolveCDSAccount</span><span class="entity-type">→ owner, MSISDN</span></div>
+          <div class="entity-row"><span class="entity-field">getHoldings</span><span class="entity-type">→ portfolio []</span></div>
+          <div class="entity-row"><span class="entity-field">getMarketPrice</span><span class="entity-type">→ price feed</span></div>
+          <div class="entity-row"><span class="entity-field">placeLien</span><span class="entity-type">→ lienId, status</span></div>
+          <div class="entity-row"><span class="entity-field">releaseLien</span><span class="entity-type">→ confirmation</span></div>
+          <div class="entity-row"><span class="entity-field">instructLiquidation</span><span class="entity-type">→ orderId</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>CRB Adapter</h3>
+        <p style="font-size:0.92rem;color:var(--ink-700);">Connects to the Credit Reference Bureau for real-time credit scores, history retrieval, and inquiry logging — within consent boundaries captured during onboarding.</p>
+        <div class="entity" style="margin-top:14px;">
+          <div class="entity-head">Operations</div>
+          <div class="entity-row"><span class="entity-field">getCreditScore</span><span class="entity-type">→ score, band</span></div>
+          <div class="entity-row"><span class="entity-field">getCreditReport</span><span class="entity-type">→ history</span></div>
+          <div class="entity-row"><span class="entity-field">submitInquiry</span><span class="entity-type">→ inquiryId</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Payment Rails Adapter</h3>
+        <p style="font-size:0.92rem;color:var(--ink-700);">Abstracts disbursements and repayments across mobile money providers (M-Pesa, Tigo Pesa, Airtel Money), TIPS, card rails, and direct bank transfer.</p>
+        <div class="entity" style="margin-top:14px;">
+          <div class="entity-head">Operations</div>
+          <div class="entity-row"><span class="entity-field">creditAccount</span><span class="entity-type">→ txId, status</span></div>
+          <div class="entity-row"><span class="entity-field">debitAccount</span><span class="entity-type">→ txId, status</span></div>
+          <div class="entity-row"><span class="entity-field">verifyAccount</span><span class="entity-type">→ owner name</span></div>
+          <div class="entity-row"><span class="entity-field">queryStatus</span><span class="entity-type">→ tx state</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">↳ A note on tenancy &amp; configuration</div>
+      <p style="margin: 0;">
+        Each bank tenant configures: <strong>eligible securities whitelist</strong>, <strong>LTV ratios</strong>
+        per asset class, <strong>haircut tables</strong>, <strong>min/max loan amounts</strong>, <strong>allowed
+        tenors</strong>, <strong>interest formula</strong>, <strong>fee schedule</strong>, <strong>STP
+        threshold</strong>, <strong>grace period</strong> before forced liquidation, and <strong>customer
+        eligibility filters</strong> (e.g. minimum credit band). The eligibility engine reads these per
+        request and computes per-bank offers in parallel.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ DATA MODEL ═══════════════ -->
+<section id="data">
+  <div class="wrap">
+    <div class="section-eyebrow">09 · Data Model</div>
+    <h2>The core entities Kapu reasons over.</h2>
+    <p class="section-lead">High-level, technology-agnostic. The actual schemas, service ownership and storage choice are implementation detail. What matters here is the shape of the domain.</p>
+
+    <div class="grid-3" style="margin-top: 36px;">
+      <div class="entity">
+        <div class="entity-head">Shareholder</div>
+        <div class="entity-row pk"><span class="entity-field">shareholder_id</span><span class="entity-type">UUID</span></div>
+        <div class="entity-row"><span class="entity-field">cds_account</span><span class="entity-type">string</span></div>
+        <div class="entity-row"><span class="entity-field">msisdn</span><span class="entity-type">phone</span></div>
+        <div class="entity-row"><span class="entity-field">full_name</span><span class="entity-type">string</span></div>
+        <div class="entity-row"><span class="entity-field">national_id</span><span class="entity-type">string</span></div>
+        <div class="entity-row"><span class="entity-field">kyc_status</span><span class="entity-type">enum</span></div>
+        <div class="entity-row"><span class="entity-field">created_at</span><span class="entity-type">timestamp</span></div>
+      </div>
+
+      <div class="entity">
+        <div class="entity-head">Bank Tenant</div>
+        <div class="entity-row pk"><span class="entity-field">bank_id</span><span class="entity-type">UUID</span></div>
+        <div class="entity-row"><span class="entity-field">name</span><span class="entity-type">string</span></div>
+        <div class="entity-row"><span class="entity-field">api_endpoint</span><span class="entity-type">url</span></div>
+        <div class="entity-row"><span class="entity-field">product_config</span><span class="entity-type">json</span></div>
+        <div class="entity-row"><span class="entity-field">ltv_table</span><span class="entity-type">json</span></div>
+        <div class="entity-row"><span class="entity-field">haircut_table</span><span class="entity-type">json</span></div>
+        <div class="entity-row"><span class="entity-field">stp_threshold</span><span class="entity-type">money</span></div>
+        <div class="entity-row"><span class="entity-field">status</span><span class="entity-type">enum</span></div>
+      </div>
+
+      <div class="entity">
+        <div class="entity-head">Holding</div>
+        <div class="entity-row pk"><span class="entity-field">holding_id</span><span class="entity-type">UUID</span></div>
+        <div class="entity-row"><span class="entity-field">shareholder_id</span><span class="entity-type">FK</span></div>
+        <div class="entity-row"><span class="entity-field">security_code</span><span class="entity-type">string</span></div>
+        <div class="entity-row"><span class="entity-field">quantity</span><span class="entity-type">int</span></div>
+        <div class="entity-row"><span class="entity-field">market_value</span><span class="entity-type">money</span></div>
+        <div class="entity-row"><span class="entity-field">free_quantity</span><span class="entity-type">int</span></div>
+        <div class="entity-row"><span class="entity-field">last_synced_at</span><span class="entity-type">timestamp</span></div>
+      </div>
+
+      <div class="entity">
+        <div class="entity-head">Loan Offer</div>
+        <div class="entity-row pk"><span class="entity-field">offer_id</span><span class="entity-type">UUID</span></div>
+        <div class="entity-row"><span class="entity-field">application_id</span><span class="entity-type">FK</span></div>
+        <div class="entity-row"><span class="entity-field">bank_id</span><span class="entity-type">FK</span></div>
+        <div class="entity-row"><span class="entity-field">amount</span><span class="entity-type">money</span></div>
+        <div class="entity-row"><span class="entity-field">interest_rate</span><span class="entity-type">decimal</span></div>
+        <div class="entity-row"><span class="entity-field">tenor_months</span><span class="entity-type">int</span></div>
+        <div class="entity-row"><span class="entity-field">expires_at</span><span class="entity-type">timestamp</span></div>
+        <div class="entity-row"><span class="entity-field">status</span><span class="entity-type">enum</span></div>
+      </div>
+
+      <div class="entity">
+        <div class="entity-head">Loan</div>
+        <div class="entity-row pk"><span class="entity-field">loan_id</span><span class="entity-type">UUID</span></div>
+        <div class="entity-row"><span class="entity-field">offer_id</span><span class="entity-type">FK</span></div>
+        <div class="entity-row"><span class="entity-field">shareholder_id</span><span class="entity-type">FK</span></div>
+        <div class="entity-row"><span class="entity-field">bank_id</span><span class="entity-type">FK</span></div>
+        <div class="entity-row"><span class="entity-field">principal</span><span class="entity-type">money</span></div>
+        <div class="entity-row"><span class="entity-field">outstanding</span><span class="entity-type">money</span></div>
+        <div class="entity-row"><span class="entity-field">disbursed_at</span><span class="entity-type">timestamp</span></div>
+        <div class="entity-row"><span class="entity-field">next_due_at</span><span class="entity-type">timestamp</span></div>
+        <div class="entity-row"><span class="entity-field">status</span><span class="entity-type">enum</span></div>
+      </div>
+
+      <div class="entity">
+        <div class="entity-head">Lien</div>
+        <div class="entity-row pk"><span class="entity-field">lien_id</span><span class="entity-type">UUID</span></div>
+        <div class="entity-row"><span class="entity-field">loan_id</span><span class="entity-type">FK</span></div>
+        <div class="entity-row"><span class="entity-field">holding_id</span><span class="entity-type">FK</span></div>
+        <div class="entity-row"><span class="entity-field">quantity_locked</span><span class="entity-type">int</span></div>
+        <div class="entity-row"><span class="entity-field">cds_lien_ref</span><span class="entity-type">string</span></div>
+        <div class="entity-row"><span class="entity-field">placed_at</span><span class="entity-type">timestamp</span></div>
+        <div class="entity-row"><span class="entity-field">released_at</span><span class="entity-type">timestamp?</span></div>
+        <div class="entity-row"><span class="entity-field">status</span><span class="entity-type">enum</span></div>
+      </div>
+    </div>
+
+    <p style="margin-top: 28px; font-size: 0.92rem; color: var(--ink-600);">Additional supporting entities include <code>RepaymentSchedule</code>, <code>RepaymentTransaction</code>, <code>CreditInquiry</code>, <code>Notification</code>, <code>Session</code>, <code>Device</code>, <code>EventLogEntry</code>, and <code>DocumentAttachment</code>.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ FUNCTIONAL REQUIREMENTS ═══════════════ -->
+<section id="requirements" style="background: var(--ink-50);">
+  <div class="wrap">
+    <div class="section-eyebrow">10 · Functional Requirements</div>
+    <h2>What Kapu must do.</h2>
+    <p class="section-lead">Grouped by capability area. Priority 1 = MVP. Priority 2 = phase 2. Priority 3 = future.</p>
+
+    <h3 style="margin-top: 48px;">RC1 · Identity, Onboarding &amp; Channels</h3>
+    <table class="req-table">
+      <thead><tr><th style="width:80px;">ID</th><th>Requirement</th><th style="width:100px;">Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="req-id">FR-1.1</td><td>System shall allow a shareholder to register on Kapu by entering their CDS account number and verifying ownership via OTP sent to the linked phone number.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-1.2</td><td>System shall provide a native mobile application (iOS &amp; Android) and a WhatsApp chatbot as the primary onboarding and servicing channels.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-1.3</td><td>System shall capture KYC details and supporting documents during onboarding and validate them against national identity sources where available.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-1.4</td><td>System shall enforce biometric or PIN authentication on every subsequent app session and after configurable inactivity periods.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-1.5</td><td>System shall support OAuth2/PKCE for partner-bank staff and admin users with role-based access control.</td><td><span class="pri pri-2">P2</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top: 36px;">RC2 · Portfolio &amp; Valuation</h3>
+    <table class="req-table">
+      <thead><tr><th style="width:80px;">ID</th><th>Requirement</th><th style="width:100px;">Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="req-id">FR-2.1</td><td>System shall retrieve the shareholder's full DSE portfolio holdings via API integration with CDS in real time.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-2.2</td><td>System shall display the current market value of each holding using a live price feed from DSE.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-2.3</td><td>System shall flag each holding as eligible or ineligible per participating bank's whitelist.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-2.4</td><td>System shall continuously distinguish free vs lien-locked quantities for each holding.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-2.5</td><td>System shall provide an aggregate portfolio value, free-for-collateral value, and lien-locked value at the dashboard level.</td><td><span class="pri pri-1">P1</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top: 36px;">RC3 · Eligibility &amp; Marketplace</h3>
+    <table class="req-table">
+      <thead><tr><th style="width:80px;">ID</th><th>Requirement</th><th style="width:100px;">Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="req-id">FR-3.1</td><td>System shall compute the maximum eligible loan amount per bank based on the bank's LTV table, dynamic haircut, and tenor rules.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-3.2</td><td>System shall reject loan applications that exceed the maximum eligible amount and surface the computed maximum to the user.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-3.3</td><td>System shall fan out a loan request to all eligible participating banks and aggregate their offers within a configurable time window.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-3.4</td><td>System shall present aggregated offers to the shareholder with comparable fields (rate, tenor, fees, expected disbursement TAT).</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-3.5</td><td>System shall enforce offer expiry and require refresh if the shareholder does not accept within the validity window.</td><td><span class="pri pri-2">P2</span></td></tr>
+        <tr><td class="req-id">FR-3.6</td><td>System shall support filtering and sorting of offers by rate, tenor, total cost of credit, and lender preference.</td><td><span class="pri pri-2">P2</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top: 36px;">RC4 · Origination, Credit &amp; Disbursement</h3>
+    <table class="req-table">
+      <thead><tr><th style="width:80px;">ID</th><th>Requirement</th><th style="width:100px;">Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="req-id">FR-4.1</td><td>System shall integrate with the Credit Reference Bureau to obtain a real-time credit score for the applicant.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-4.2</td><td>System shall route low-risk, sub-threshold loans through Straight-Through Processing without manual intervention.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-4.3</td><td>System shall route high-risk or high-value loans to the lender's manual approval queue with full case context attached.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-4.4</td><td>System shall generate the loan agreement automatically and present it for digital execution by the shareholder.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-4.5</td><td>System shall instruct the lender's LMS to book the loan only after lien confirmation has been received from CDS.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-4.6</td><td>System shall trigger disbursement to the shareholder's nominated payment destination immediately after loan booking.</td><td><span class="pri pri-1">P1</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top: 36px;">RC5 · Collateral &amp; Lien</h3>
+    <table class="req-table">
+      <thead><tr><th style="width:80px;">ID</th><th>Requirement</th><th style="width:100px;">Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="req-id">FR-5.1</td><td>System shall obtain explicit, signed authorisation from the shareholder for each lien before instructing CDS.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-5.2</td><td>System shall instruct lien placement on the relevant securities through the broker-CDS channel.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-5.3</td><td>System shall record lien confirmation references and surface them on the loan record.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-5.4</td><td>System shall release the lien automatically upon full settlement of the loan.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-5.5</td><td>System shall maintain an immutable audit trail of every lien placement and release.</td><td><span class="pri pri-1">P1</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top: 36px;">RC6 · Repayment, Closure &amp; Liquidation</h3>
+    <table class="req-table">
+      <thead><tr><th style="width:80px;">ID</th><th>Requirement</th><th style="width:100px;">Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="req-id">FR-6.1</td><td>System shall display the repayment schedule, next due date and outstanding balance to the shareholder at all times.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-6.2</td><td>System shall accept scheduled and ad-hoc repayments through any configured payment rail.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-6.3</td><td>System shall allow the shareholder to initiate early loan closure with real-time computation of outstanding amount.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-6.4</td><td>System shall trigger forced liquidation of pledged securities through the broker after the configured grace period upon default.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-6.5</td><td>System shall apply liquidation proceeds against the outstanding loan and release surplus to the shareholder.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-6.6</td><td>System shall send proactive reminders ahead of due dates and after missed payments through the shareholder's preferred channel.</td><td><span class="pri pri-2">P2</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top: 36px;">RC7 · Bank Tenancy &amp; Admin</h3>
+    <table class="req-table">
+      <thead><tr><th style="width:80px;">ID</th><th>Requirement</th><th style="width:100px;">Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="req-id">FR-7.1</td><td>System shall provide an admin console for onboarding new bank tenants and configuring product parameters.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-7.2</td><td>System shall expose a partner-bank portal with manual review queues, loan dashboards, and reconciliation reports.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-7.3</td><td>System shall allow each bank to update LTV tables, haircut tables, and eligibility rules with full versioning and audit trail.</td><td><span class="pri pri-1">P1</span></td></tr>
+        <tr><td class="req-id">FR-7.4</td><td>System shall enforce per-bank exposure limits, including total outstanding and concentration by security or sector.</td><td><span class="pri pri-2">P2</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ NON-FUNCTIONAL ═══════════════ -->
+<section id="nfr">
+  <div class="wrap">
+    <div class="section-eyebrow">11 · Non-Functional Requirements</div>
+    <h2>How well Kapu must do it.</h2>
+    <p class="section-lead">The qualities that make Kapu trustworthy as a market utility, not just a working prototype.</p>
+
+    <table class="req-table" style="margin-top: 24px;">
+      <thead><tr><th style="width:80px;">ID</th><th>Category</th><th>Requirement</th></tr></thead>
+      <tbody>
+        <tr><td class="req-id">NFR-1</td><td>Performance</td><td>End-to-end loan origination (eligibility → offer → acceptance → lien → disbursement) shall complete within 5 minutes for STP-eligible cases under nominal load.</td></tr>
+        <tr><td class="req-id">NFR-2</td><td>Availability</td><td>Core platform shall maintain 99.9% monthly availability during business hours, with graceful degradation when external dependencies are unavailable.</td></tr>
+        <tr><td class="req-id">NFR-3</td><td>Scalability</td><td>The platform shall scale horizontally to support at least 10,000 concurrent shareholders and 100 partner bank tenants without architectural change.</td></tr>
+        <tr><td class="req-id">NFR-4</td><td>Security</td><td>All data in transit shall be protected by TLS 1.3 (or current equivalent). Partner traffic shall additionally use mutual TLS. Sensitive data at rest shall be encrypted with keys managed in an HSM/KMS.</td></tr>
+        <tr><td class="req-id">NFR-5</td><td>Auditability</td><td>Every state transition (registration, OTP, eligibility, offer, acceptance, lien, disbursement, repayment, closure) shall produce an immutable, tamper-evident event-log entry.</td></tr>
+        <tr><td class="req-id">NFR-6</td><td>Privacy &amp; Consent</td><td>The platform shall capture explicit, scoped consent before sharing any shareholder data with a participating bank or external bureau.</td></tr>
+        <tr><td class="req-id">NFR-7</td><td>Compliance</td><td>The platform shall comply with applicable Bank of Tanzania regulations, CMSA rules, the Personal Data Protection Act, and AML/CFT obligations.</td></tr>
+        <tr><td class="req-id">NFR-8</td><td>Resilience</td><td>All outbound integrations shall implement timeouts, circuit-breakers, retries with backoff, and idempotent semantics on writes.</td></tr>
+        <tr><td class="req-id">NFR-9</td><td>Observability</td><td>The platform shall expose structured logs, distributed traces, and metrics for every transaction, with SLO-driven alerting.</td></tr>
+        <tr><td class="req-id">NFR-10</td><td>Accessibility</td><td>The mobile app shall meet WCAG 2.1 AA contrast and navigation guidelines and offer at minimum English and Swahili.</td></tr>
+        <tr><td class="req-id">NFR-11</td><td>Disaster Recovery</td><td>RPO ≤ 15 minutes; RTO ≤ 4 hours. Quarterly DR drills with documented evidence.</td></tr>
+        <tr><td class="req-id">NFR-12</td><td>Interoperability</td><td>All external contracts shall be expressed in OpenAPI 3.x, versioned semantically, and accompanied by sandbox environments for partner integration.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ SECURITY ═══════════════ -->
+<section id="security" style="background: var(--ink-50);">
+  <div class="wrap">
+    <div class="section-eyebrow">12 · Security &amp; Compliance</div>
+    <h2>Trust is the product.</h2>
+    <p class="section-lead">A market utility moves real money against real assets. Security, privacy, and regulatory alignment are not features — they are the foundation.</p>
+
+    <div class="grid-2" style="margin-top: 36px;">
+      <div class="card">
+        <div class="card-icon">🔐</div>
+        <h3>Identity &amp; access</h3>
+        <p>Multi-factor authentication for every shareholder. Device binding with revocation. Strong customer authentication for high-value actions. Role-based access control with least-privilege defaults for internal and partner-bank users.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h3>Data protection</h3>
+        <p>Field-level encryption for PII. KMS/HSM-managed keys with rotation. Tokenised handles for sensitive identifiers shared with bank tenants. Data minimisation in transit between Kapu and external systems.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📜</div>
+        <h3>Consent &amp; transparency</h3>
+        <p>Granular, scoped consent capture: portfolio sharing, CRB lookup, lien placement, marketing communications. All consents are revocable and timestamped in the event log.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧾</div>
+        <h3>Audit &amp; reporting</h3>
+        <p>Tamper-evident event ledger with hash-chained entries. Pre-built regulator exports. Automated reconciliation between Kapu, banks' LMS, CDS, and payment rails. Annual third-party audits.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚖️</div>
+        <h3>Regulatory alignment</h3>
+        <p>Designed to align with Bank of Tanzania prudential and consumer-protection guidance, CMSA capital-markets rules around lien marking, and the Personal Data Protection Act for shareholder data handling.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚨</div>
+        <h3>Fraud &amp; AML</h3>
+        <p>Velocity rules, device fingerprinting, behavioural anomaly detection. AML screening on shareholder onboarding. Suspicious-transaction monitoring with case management for ops review.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ ROADMAP ═══════════════ -->
+<section id="roadmap">
+  <div class="wrap">
+    <div class="section-eyebrow">13 · Phasing &amp; Roadmap</div>
+    <h2>From pilot bank to market utility.</h2>
+    <p class="section-lead">Indicative phasing. Each phase delivers shareholder value end-to-end; later phases broaden the ecosystem.</p>
+
+    <div class="timeline" style="margin-top: 48px;">
+      <div class="timeline-item">
+        <div class="timeline-phase">Phase 0 · Foundations</div>
+        <h4>Discovery, partner alignment, regulatory engagement</h4>
+        <p>Confirm legal and regulatory framework for a multi-bank lending utility. Sign first 1–2 pilot bank tenants. Establish CDS, broker, and CRB integration agreements. Finalise security and data-protection posture.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-phase">Phase 1 · MVP</div>
+        <h4>Single-bank live, mobile + WhatsApp, end-to-end flow</h4>
+        <p>Mobile app and WhatsApp chatbot. CDS integration for portfolio + lien. CRB integration. One pilot bank's LMS connector. Eligibility engine, marketplace (single offer), origination, lien, disbursement, repayment, closure. Admin console (basic).</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-phase">Phase 2 · Marketplace</div>
+        <h4>Multi-bank competitive offers</h4>
+        <p>Onboard 3–5 additional banks. Marketplace fan-out and aggregation. Per-bank product configuration tooling. Side-by-side offer comparison UX. Manual review queues for partner banks. Reconciliation dashboards.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-phase">Phase 3 · Scale &amp; Depth</div>
+        <h4>Productisation &amp; resilience</h4>
+        <p>Forced-liquidation pipeline hardening. Advanced fraud and AML modules. Tiered customer support. Partner-bank self-serve onboarding. Public sandbox for new banks. Enhanced analytics for product, risk, and ops teams.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-phase">Phase 4 · Adjacencies</div>
+        <h4>Expanding the rail</h4>
+        <p>Expand collateral types beyond DSE equities (T-bonds, corporate bonds, CIS units). Bond-coupon-aware repayment models. Cross-border tenancy. Open data products for participating institutions and regulators.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ EXECUTION PLAN ═══════════════ -->
+<section id="execution" style="background: var(--ink-50);">
+  <div class="wrap">
+    <div class="section-eyebrow">14 · Execution Plan &amp; Engineering Tracks</div>
+    <h2>How we actually build Kapu — with four engineers, in parallel.</h2>
+    <p class="section-lead">
+      The work is sliced into four tracks that run side-by-side from week one. Each track has a
+      single owner, a clear deliverable, and a short list of external dependencies that must be
+      negotiated up-front so engineering never blocks on paperwork.
+    </p>
+
+    <!-- Tracks at a glance -->
+    <div class="exec-summary">
+      <div class="exec-summary-card t-a">
+        <div class="exec-summary-num">TRACK A · ENGINEER 1</div>
+        <h4>Foundations &amp; Platform</h4>
+        <p>Cloud, CI/CD, identity, secrets, observability, event ledger. The ground every other track stands on.</p>
+      </div>
+      <div class="exec-summary-card t-b">
+        <div class="exec-summary-num">TRACK B · ENGINEER 2</div>
+        <h4>Backend Core Services</h4>
+        <p>Portfolio, eligibility engine, marketplace, origination, lien, repayment. The brain of Kapu.</p>
+      </div>
+      <div class="exec-summary-card t-c">
+        <div class="exec-summary-num">TRACK C · ENGINEER 3</div>
+        <h4>Channels (Mobile + WhatsApp)</h4>
+        <p>The mobile app, the WhatsApp chatbot, the BFF. Everything the shareholder actually touches.</p>
+      </div>
+      <div class="exec-summary-card t-d">
+        <div class="exec-summary-num">TRACK D · ENGINEER 4</div>
+        <h4>Integrations &amp; LMS Gateway</h4>
+        <p>DSE/CDS, brokers, CRB, payment rails, bank LMS connectors. Where Kapu meets the outside world.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">↳ The parallelization principle</div>
+      <p style="margin: 0;">
+        Work starts in parallel from week one. Track A ships shared scaffolding (auth library, event bus,
+        deployment pipeline) that Tracks B, C and D depend on. Tracks B and D mock each other's contracts
+        with stubs until real integrations land. Track C ships against a fake-data backend until Track B's
+        endpoints are real. Each pair has a daily 15-minute sync; the team meets weekly to unblock seams.
+      </p>
+    </div>
+
+    <!-- ─── DETAILED TRACK CARDS (mobile-first stack) ─── -->
+    <h3 style="margin-top: 56px;">What each track does, week by week</h3>
+    <p style="color: var(--ink-600); max-width: 720px;">Tasks marked <span class="api-badge">External API</span> require an upstream provider (DSE, CDS, CRB, bank, payment rail). The business team should start those conversations in week 1.</p>
+
+    <div class="exec-tracks">
+      <!-- TRACK A -->
+      <div class="track-card t-a">
+        <div>
+          <span class="track-pill">TRACK A · FOUNDATIONS</span>
+          <span class="track-engineer">· Engineer 1</span>
+        </div>
+        <h3>Lay the ground</h3>
+        <p style="font-size:0.9rem;color:var(--ink-600);margin:0;">Everything that other tracks consume: shared libraries, deployment pipeline, identity, secrets, observability, the event ledger.</p>
+        <ul class="track-tasks">
+          <li>
+            <span class="task-week">W 1–2</span>
+            <div class="task-content">
+              <div class="task-title">Cloud accounts &amp; CI/CD skeleton</div>
+              <div class="task-note">VPC, environments (dev / staging / prod), pipeline, container registry, secret manager.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 1–3</span>
+            <div class="task-content">
+              <div class="task-title">Auth &amp; identity service</div>
+              <div class="task-note">OTP issuance &amp; verification, session tokens, biometric/PIN binding, OAuth2/PKCE for partner staff.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 2–4</span>
+            <div class="task-content">
+              <div class="task-title">Shared service skeleton</div>
+              <div class="task-note">HTTP framework, validation, error envelope, idempotency middleware, structured logging.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 3–5</span>
+            <div class="task-content">
+              <div class="task-title">Event ledger &amp; audit log</div>
+              <div class="task-note">Append-only event store with hash-chaining, replay tooling, and projection helpers.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 4–6</span>
+            <div class="task-content">
+              <div class="task-title">Observability stack</div>
+              <div class="task-note">Distributed tracing, metrics, dashboards, alerting, SLO definitions per service.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 5–8</span>
+            <div class="task-content">
+              <div class="task-title">Admin console (v1)</div>
+              <div class="task-note">Internal back-office: tenant management, manual review queues, audit explorer.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 7–10</span>
+            <div class="task-content">
+              <div class="task-title">Hardening &amp; DR rehearsal</div>
+              <div class="task-note">Load tests, failover drills, secrets rotation, backup &amp; restore validation.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- TRACK B -->
+      <div class="track-card t-b">
+        <div>
+          <span class="track-pill">TRACK B · BACKEND CORE</span>
+          <span class="track-engineer">· Engineer 2</span>
+        </div>
+        <h3>The brain</h3>
+        <p style="font-size:0.9rem;color:var(--ink-600);margin:0;">The domain logic: portfolio sync, eligibility computation, marketplace fan-out, loan origination, lien orchestration, repayment scheduling.</p>
+        <ul class="track-tasks">
+          <li>
+            <span class="task-week">W 1–2</span>
+            <div class="task-content">
+              <div class="task-title">Domain model &amp; storage</div>
+              <div class="task-note">Shareholder, Holding, LoanOffer, Loan, Lien, RepaymentSchedule entities, with migrations.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 2–4</span>
+            <div class="task-content">
+              <div class="task-title">Portfolio service</div>
+              <div class="task-note">Holdings sync against Track D's CDS adapter (mocked initially), valuation, free-vs-lien tracking.<span class="api-badge">CDS</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 3–5</span>
+            <div class="task-content">
+              <div class="task-title">Eligibility &amp; risk engine</div>
+              <div class="task-note">LTV tables, dynamic haircuts, max amount &amp; tenor computation, per-tenant rule sets.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 4–6</span>
+            <div class="task-content">
+              <div class="task-title">Marketplace service</div>
+              <div class="task-note">Fan-out to bank tenants, offer aggregation, expiry, comparison surface.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 5–7</span>
+            <div class="task-content">
+              <div class="task-title">Origination &amp; collateral orchestration</div>
+              <div class="task-note">Application state machine, CRB call, agreement generation hand-off, lien instruction sequence.<span class="api-badge">CRB</span><span class="api-badge">CDS</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 6–8</span>
+            <div class="task-content">
+              <div class="task-title">Repayment &amp; servicing</div>
+              <div class="task-note">Schedule generation, instalment processing, early closure, default detection &amp; aging.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 7–10</span>
+            <div class="task-content">
+              <div class="task-title">Forced liquidation pipeline</div>
+              <div class="task-note">Default trigger, broker liquidation instruction, proceeds reconciliation, surplus return.<span class="api-badge">Broker</span></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- TRACK C -->
+      <div class="track-card t-c">
+        <div>
+          <span class="track-pill">TRACK C · CHANNELS</span>
+          <span class="track-engineer">· Engineer 3</span>
+        </div>
+        <h3>Where the user lives</h3>
+        <p style="font-size:0.9rem;color:var(--ink-600);margin:0;">Mobile app (iOS &amp; Android), the WhatsApp chatbot, and the backend-for-frontend that tailors data per channel.</p>
+        <ul class="track-tasks">
+          <li>
+            <span class="task-week">W 1–3</span>
+            <div class="task-content">
+              <div class="task-title">Mobile app shell &amp; design system</div>
+              <div class="task-note">Cross-platform shell (Flutter or React Native), navigation, theming, design tokens.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 2–4</span>
+            <div class="task-content">
+              <div class="task-title">BFF &amp; API gateway routes</div>
+              <div class="task-note">Backend-for-frontend per channel, auth middleware, request shaping, rate limits.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 3–5</span>
+            <div class="task-content">
+              <div class="task-title">Onboarding &amp; portfolio screens</div>
+              <div class="task-note">CDS entry, OTP, KYC capture, biometric setup, dashboard, holdings list.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 4–6</span>
+            <div class="task-content">
+              <div class="task-title">Loan origination screens</div>
+              <div class="task-note">Loan request form, marketplace comparison, e-signature, status tracker, success state.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 4–7</span>
+            <div class="task-content">
+              <div class="task-title">WhatsApp chatbot</div>
+              <div class="task-note">Conversation flows, intent classification, list/button messages, hand-off paths.<span class="api-badge">WhatsApp Business</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 5–7</span>
+            <div class="task-content">
+              <div class="task-title">Repayment &amp; servicing screens</div>
+              <div class="task-note">Schedule view, repay-now flow, early closure, statements, lien view per loan.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 7–10</span>
+            <div class="task-content">
+              <div class="task-title">Notifications, polish, store submission</div>
+              <div class="task-note">Push, SMS, in-app banners. Accessibility pass. App-store assets, beta &amp; production submissions.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- TRACK D -->
+      <div class="track-card t-d">
+        <div>
+          <span class="track-pill">TRACK D · INTEGRATIONS</span>
+          <span class="track-engineer">· Engineer 4</span>
+        </div>
+        <h3>The outside world</h3>
+        <p style="font-size:0.9rem;color:var(--ink-600);margin:0;">Every line that crosses Kapu's boundary: DSE/CDS, brokers, CRB, payment rails, KYC providers, e-signature, and the bank LMS contract.</p>
+        <ul class="track-tasks">
+          <li>
+            <span class="task-week">W 1–2</span>
+            <div class="task-content">
+              <div class="task-title">Bank LMS API contract (Kapu's standard)</div>
+              <div class="task-note">OpenAPI spec, signing scheme, idempotency rules, sandbox harness — the contract every bank implements.</div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 2–4</span>
+            <div class="task-content">
+              <div class="task-title">CDS / DSE adapter</div>
+              <div class="task-note">resolveCDSAccount, getHoldings, getMarketPrice, placeLien, releaseLien.<span class="api-badge">CDS</span><span class="api-badge">DSE</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 3–5</span>
+            <div class="task-content">
+              <div class="task-title">CRB adapter</div>
+              <div class="task-note">getCreditScore, getCreditReport, submitInquiry, with consent capture and TTL caching.<span class="api-badge">CRB</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 4–6</span>
+            <div class="task-content">
+              <div class="task-title">Payment rails adapter</div>
+              <div class="task-note">Disburse &amp; debit across mobile money, TIPS, card, bank transfer. Idempotent, reconcilable.<span class="api-badge">TIPS</span><span class="api-badge">Mobile Money</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 5–7</span>
+            <div class="task-content">
+              <div class="task-title">First bank LMS connector (pilot)</div>
+              <div class="task-note">Concrete implementation against the pilot bank's CBS, end-to-end booking and disbursement.<span class="api-badge">Pilot Bank LMS</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 5–7</span>
+            <div class="task-content">
+              <div class="task-title">E-signature &amp; KYC providers</div>
+              <div class="task-note">Document generation, e-signature flow, ID document OCR, NIDA / NIN validation where available.<span class="api-badge">E-sign</span><span class="api-badge">NIDA</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="task-week">W 7–10</span>
+            <div class="task-content">
+              <div class="task-title">Broker liquidation channel</div>
+              <div class="task-note">Liquidation instruction, status tracking, settlement reconciliation against pledged lots.<span class="api-badge">Broker</span></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ─── GANTT-STYLE TIMELINE ─── -->
+    <h3 style="margin-top: 64px;">6-week parallel build, visualised</h3>
+    <p style="color: var(--ink-600); max-width: 720px;">Each row is a track. Each bar is a workstream. Bars carrying the 🔌 symbol depend on an external API being available. Scroll horizontally on mobile.</p>
+
+    <div class="gantt-wrap">
+      <div class="gantt-scroll">
+        <div class="gantt">
+          <!-- Header row -->
+          <div class="gantt-header first">Track</div>
+          <div class="gantt-header">W 1</div>
+          <div class="gantt-header">W 2</div>
+          <div class="gantt-header">W 3</div>
+          <div class="gantt-header">W 4</div>
+          <div class="gantt-header">W 5</div>
+          <div class="gantt-header">W 6</div>
+
+          <!-- Track A -->
+          <div class="gantt-track-label">Track A<span class="gantt-engineer">Foundations · Eng 1</span></div>
+          <div class="gantt-cell" style="grid-column: span 2;"><div class="gantt-bar t-a">CI/CD &amp; Auth</div></div>
+          <div class="gantt-cell" style="grid-column: span 2;"><div class="gantt-bar t-a">Service shell + Ledger</div></div>
+          <div class="gantt-cell"><div class="gantt-bar t-a">Observability</div></div>
+          <div class="gantt-cell"><div class="gantt-bar t-a">Harden + DR</div></div>
+
+          <!-- Track B -->
+          <div class="gantt-track-label">Track B<span class="gantt-engineer">Backend Core · Eng 2</span></div>
+          <div class="gantt-cell"><div class="gantt-bar t-b">Domain</div></div>
+          <div class="gantt-cell"><div class="gantt-bar t-b api">Portfolio</div></div>
+          <div class="gantt-cell" style="grid-column: span 2;"><div class="gantt-bar t-b">Eligibility + Marketplace</div></div>
+          <div class="gantt-cell"><div class="gantt-bar t-b api">Origination + Lien</div></div>
+          <div class="gantt-cell"><div class="gantt-bar t-b api">Repay + Liquidation</div></div>
+
+          <!-- Track C -->
+          <div class="gantt-track-label">Track C<span class="gantt-engineer">Channels · Eng 3</span></div>
+          <div class="gantt-cell"><div class="gantt-bar t-c">App shell + BFF</div></div>
+          <div class="gantt-cell" style="grid-column: span 2;"><div class="gantt-bar t-c">Onboarding screens</div></div>
+          <div class="gantt-cell"><div class="gantt-bar t-c api">Loan + WhatsApp</div></div>
+          <div class="gantt-cell"><div class="gantt-bar t-c">Repay UX</div></div>
+          <div class="gantt-cell"><div class="gantt-bar t-c">Polish + Submit</div></div>
+
+          <!-- Track D -->
+          <div class="gantt-track-label">Track D<span class="gantt-engineer">Integrations · Eng 4</span></div>
+          <div class="gantt-cell"><div class="gantt-bar t-d">LMS spec</div></div>
+          <div class="gantt-cell" style="grid-column: span 2;"><div class="gantt-bar t-d api">CDS / DSE</div></div>
+          <div class="gantt-cell"><div class="gantt-bar t-d api">CRB + Payments</div></div>
+          <div class="gantt-cell"><div class="gantt-bar t-d api">Pilot Bank + e-Sign</div></div>
+          <div class="gantt-cell"><div class="gantt-bar t-d api">Broker liquidation</div></div>
+        </div>
+      </div>
+
+      <div style="padding: 16px 20px; border-top: 1px solid var(--ink-200); background: var(--ink-50); font-size: 0.85rem; color: var(--ink-600); display: flex; flex-wrap: wrap; gap: 18px; align-items: center;">
+        <span style="font-weight:600;color:var(--ink-700);">Legend</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;">🔌 <span>Bar requires an external API</span></span>
+        <span style="font-style:italic;">Bars span the weeks shown along the top.</span>
+      </div>
+    </div>
+
+    <!-- ─── MILESTONES ─── -->
+    <h3 style="margin-top: 64px;">Critical milestones</h3>
+    <p style="color: var(--ink-600); max-width: 720px;">Five hard checkpoints. Each is a demo-able outcome — not "code merged" but "the system can do <em>X</em>".</p>
+
+    <div class="milestones">
+      <div class="milestone">
+        <div class="milestone-flag">M1</div>
+        <div class="milestone-week">End of Week 2</div>
+        <h4>Skeleton walks</h4>
+        <p>A request flows through gateway, auth, a stub service, and back. Logs show up. Pipeline deploys to staging on every merge.</p>
+      </div>
+      <div class="milestone">
+        <div class="milestone-flag">M2</div>
+        <div class="milestone-week">End of Week 4</div>
+        <h4>Onboarding live</h4>
+        <p>A real shareholder enters their CDS account on the app, gets an OTP, completes KYC, and sees a portfolio (against CDS sandbox or stub).</p>
+      </div>
+      <div class="milestone">
+        <div class="milestone-flag">M3</div>
+        <div class="milestone-week">End of Week 6</div>
+        <h4>End-to-end happy path (sandbox)</h4>
+        <p>From login to "loan disbursed" against sandboxes for CDS, CRB, and the pilot bank's LMS. WhatsApp variant reaches at least the portfolio view.</p>
+      </div>
+      <div class="milestone">
+        <div class="milestone-flag">M4</div>
+        <div class="milestone-week">End of Week 8</div>
+        <h4>Pilot bank UAT-ready</h4>
+        <p>Full origination and repayment flows against pilot bank's UAT environment. Lien marking, disbursement, and a scheduled instalment all work end-to-end.</p>
+      </div>
+      <div class="milestone">
+        <div class="milestone-flag">M5</div>
+        <div class="milestone-week">End of Week 10</div>
+        <h4>MVP go-live candidate</h4>
+        <p>Production-ready build with one bank tenant. App store submissions live. DR drill passed. First real-money pilot loans ready to disburse.</p>
+      </div>
+    </div>
+
+    <!-- ─── EXTERNAL APIs FOR BUSINESS ─── -->
+    <h3 style="margin-top: 72px;">External APIs &amp; partnerships — what business should negotiate, and when</h3>
+    <p style="color: var(--ink-600); max-width: 760px;">Engineering can stub these initially, but the integrations are the critical path to go-live. The earlier these conversations start, the lower the risk to M3 and M4. Sorted by how soon engineering will need each one in working sandbox form.</p>
+
+    <table class="api-table">
+      <thead>
+        <tr>
+          <th style="width: 160px;">Partner</th>
+          <th>What we need from them</th>
+          <th style="width: 120px;">Needed by</th>
+          <th style="width: 110px;">Urgency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Partner"><div class="api-provider">CDS / DSE</div><div style="font-size:0.78rem;color:var(--ink-500);">Central Depository System &amp; the Exchange</div></td>
+          <td data-label="What we need">
+            <ul class="api-purpose-list">
+              <li>API to resolve a CDS account and return owner + linked phone number</li>
+              <li>API to retrieve current holdings for that account</li>
+              <li>Real-time or near-real-time price feed for listed securities</li>
+              <li>API to place and release liens against a holding</li>
+              <li>Sandbox environment + technical contact</li>
+            </ul>
+          </td>
+          <td data-label="Needed by">Week 3<br><span style="font-size:0.78rem;color:var(--ink-500);">(sandbox)</span></td>
+          <td data-label="Urgency"><span class="urgency-pill urgency-now">Start now</span></td>
+        </tr>
+        <tr>
+          <td data-label="Partner"><div class="api-provider">Pilot Bank</div><div style="font-size:0.78rem;color:var(--ink-500);">First bank tenant on Kapu</div></td>
+          <td data-label="What we need">
+            <ul class="api-purpose-list">
+              <li>Commitment to implement Kapu's standard LMS API contract</li>
+              <li>Sandbox CBS / LMS for booking, disbursement, and repayment posting</li>
+              <li>Product-rule definitions: LTV, haircut tables, eligible securities, STP threshold</li>
+              <li>Compliance &amp; legal sign-off on the digital agreement template</li>
+            </ul>
+          </td>
+          <td data-label="Needed by">Week 5<br><span style="font-size:0.78rem;color:var(--ink-500);">(sandbox)</span></td>
+          <td data-label="Urgency"><span class="urgency-pill urgency-now">Start now</span></td>
+        </tr>
+        <tr>
+          <td data-label="Partner"><div class="api-provider">Credit Reference Bureau</div><div style="font-size:0.78rem;color:var(--ink-500);">CRB · credit data</div></td>
+          <td data-label="What we need">
+            <ul class="api-purpose-list">
+              <li>API for credit score lookup and full credit report</li>
+              <li>Inquiry submission API and consent log requirements</li>
+              <li>Pricing, SLAs, and data-retention rules</li>
+              <li>Sandbox + sample test identities</li>
+            </ul>
+          </td>
+          <td data-label="Needed by">Week 4</td>
+          <td data-label="Urgency"><span class="urgency-pill urgency-now">Start now</span></td>
+        </tr>
+        <tr>
+          <td data-label="Partner"><div class="api-provider">Stockbroker(s)</div><div style="font-size:0.78rem;color:var(--ink-500);">For lien instructions &amp; liquidation</div></td>
+          <td data-label="What we need">
+            <ul class="api-purpose-list">
+              <li>Channel for lien instructions on customer holdings (where broker sits between Kapu and CDS)</li>
+              <li>Liquidation order placement and settlement confirmation</li>
+              <li>Reconciliation file format</li>
+            </ul>
+          </td>
+          <td data-label="Needed by">Week 5</td>
+          <td data-label="Urgency"><span class="urgency-pill urgency-soon">Soon</span></td>
+        </tr>
+        <tr>
+          <td data-label="Partner"><div class="api-provider">Mobile Money &amp; TIPS</div><div style="font-size:0.78rem;color:var(--ink-500);">M-Pesa, Tigo Pesa, Airtel Money, TIPS</div></td>
+          <td data-label="What we need">
+            <ul class="api-purpose-list">
+              <li>Merchant credit (for disbursement) and direct debit (for repayments)</li>
+              <li>Account-name verification API</li>
+              <li>Idempotent transaction APIs with confirmable status</li>
+              <li>Settlement reports for reconciliation</li>
+            </ul>
+          </td>
+          <td data-label="Needed by">Week 4</td>
+          <td data-label="Urgency"><span class="urgency-pill urgency-now">Start now</span></td>
+        </tr>
+        <tr>
+          <td data-label="Partner"><div class="api-provider">WhatsApp Business API</div><div style="font-size:0.78rem;color:var(--ink-500);">Meta · via a BSP</div></td>
+          <td data-label="What we need">
+            <ul class="api-purpose-list">
+              <li>Business Solution Provider account &amp; verified business number</li>
+              <li>Approved message templates for OTP, alerts, and notifications</li>
+              <li>Interactive list / button message capability</li>
+            </ul>
+          </td>
+          <td data-label="Needed by">Week 4</td>
+          <td data-label="Urgency"><span class="urgency-pill urgency-soon">Soon</span></td>
+        </tr>
+        <tr>
+          <td data-label="Partner"><div class="api-provider">E-signature provider</div><div style="font-size:0.78rem;color:var(--ink-500);">Legally enforceable digital execution</div></td>
+          <td data-label="What we need">
+            <ul class="api-purpose-list">
+              <li>API for signing flows compliant with Tanzanian law</li>
+              <li>Signed-document storage and retrieval</li>
+              <li>Audit certificate per signature</li>
+            </ul>
+          </td>
+          <td data-label="Needed by">Week 5</td>
+          <td data-label="Urgency"><span class="urgency-pill urgency-soon">Soon</span></td>
+        </tr>
+        <tr>
+          <td data-label="Partner"><div class="api-provider">NIDA / National ID</div><div style="font-size:0.78rem;color:var(--ink-500);">Identity verification</div></td>
+          <td data-label="What we need">
+            <ul class="api-purpose-list">
+              <li>API or process for validating a National ID number against name and DOB</li>
+              <li>Required permissions / data-sharing agreement</li>
+            </ul>
+          </td>
+          <td data-label="Needed by">Week 5</td>
+          <td data-label="Urgency"><span class="urgency-pill urgency-soon">Soon</span></td>
+        </tr>
+        <tr>
+          <td data-label="Partner"><div class="api-provider">SMS gateway</div><div style="font-size:0.78rem;color:var(--ink-500);">For OTP &amp; alerts</div></td>
+          <td data-label="What we need">
+            <ul class="api-purpose-list">
+              <li>Reliable bulk-SMS API with delivery receipts</li>
+              <li>Sender ID approval for "Kapu"</li>
+            </ul>
+          </td>
+          <td data-label="Needed by">Week 2</td>
+          <td data-label="Urgency"><span class="urgency-pill urgency-now">Start now</span></td>
+        </tr>
+        <tr>
+          <td data-label="Partner"><div class="api-provider">Push notifications</div><div style="font-size:0.78rem;color:var(--ink-500);">FCM / APNs</div></td>
+          <td data-label="What we need">
+            <ul class="api-purpose-list">
+              <li>Apple Developer and Google Play developer accounts</li>
+              <li>App-store listing assets, privacy review, metadata</li>
+            </ul>
+          </td>
+          <td data-label="Needed by">Week 8</td>
+          <td data-label="Urgency"><span class="urgency-pill urgency-later">Later</span></td>
+        </tr>
+        <tr>
+          <td data-label="Partner"><div class="api-provider">Future bank tenants</div><div style="font-size:0.78rem;color:var(--ink-500);">Phase 2 lenders</div></td>
+          <td data-label="What we need">
+            <ul class="api-purpose-list">
+              <li>Letters of intent for phase 2 onboarding</li>
+              <li>Each implements Kapu's LMS API contract; provides product config</li>
+              <li>Aligned commercial terms (fees, revenue share)</li>
+            </ul>
+          </td>
+          <td data-label="Needed by">Phase 2</td>
+          <td data-label="Urgency"><span class="urgency-pill urgency-later">Later</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout" style="margin-top: 36px;">
+      <div class="callout-title">↳ One thing to internalise</div>
+      <p style="margin: 0;">
+        <strong>External APIs are the critical path, not the code.</strong> Every week the business team
+        delays partner conversations is a week that compounds against the M3 and M4 milestones. Engineering
+        will build against stubs until real sandboxes arrive — but a stub is not a contract, and surprises
+        in the real APIs are where weeks disappear.
+      </p>
+    </div>
+
+    <!-- ─── HOW WE STAY SHIPPING ─── -->
+    <h3 style="margin-top: 72px;">How we stay shipping with four engineers</h3>
+    <div class="grid-3" style="margin-top: 18px;">
+      <div class="card">
+        <div class="card-icon">🤝</div>
+        <h4>Contract-first across tracks</h4>
+        <p style="margin:0;font-size:0.92rem;">Every cross-track interface is defined as an OpenAPI / event schema in week 1. Tracks consume each other's stubs immediately and replace them with real implementations as they land.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧪</div>
+        <h4>Sandbox-first integrations</h4>
+        <p style="margin:0;font-size:0.92rem;">Track D builds against the partner's sandbox the moment one is available. No track waits for production access.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔁</div>
+        <h4>Daily 15-minute pair syncs</h4>
+        <p style="margin:0;font-size:0.92rem;">B↔D and B↔C have standing 15-minute syncs. Decisions about contract changes are made in those rooms, captured the same day.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <h4>Weekly demo, no exceptions</h4>
+        <p style="margin:0;font-size:0.92rem;">Every Friday the team demos a working slice end-to-end. Stubs are visible as stubs. Progress is "what a stakeholder can see and click", not "what's in the repo".</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🪜</div>
+        <h4>Milestone-gated decisions</h4>
+        <p style="margin:0;font-size:0.92rem;">Scope changes are deferred to the next milestone planning session. Mid-milestone, the team protects the slice it committed to.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧯</div>
+        <h4>One swing buffer</h4>
+        <p style="margin:0;font-size:0.92rem;">Whoever finishes their week's slice early is the unblocker for the others — usually plugging integration seams. There is no idle engineer; there is a swing role.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ GLOSSARY ═══════════════ -->
+<section id="glossary" style="background: var(--bg);">
+  <div class="wrap">
+    <div class="section-eyebrow">15 · Glossary</div>
+    <h2>Terms used in this document.</h2>
+
+    <table class="req-table" style="margin-top: 24px;">
+      <thead><tr><th style="width:200px;">Term</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td class="req-id">CDS</td><td>Central Depository System — the electronic registry that holds DSE-listed securities on behalf of investors.</td></tr>
+        <tr><td class="req-id">DSE</td><td>Dar es Salaam Stock Exchange — the primary securities exchange in Tanzania.</td></tr>
+        <tr><td class="req-id">CRB</td><td>Credit Reference Bureau — provides credit scoring and reporting on borrowers.</td></tr>
+        <tr><td class="req-id">CBS</td><td>Core Banking System — a bank's transactional system of record.</td></tr>
+        <tr><td class="req-id">LMS</td><td>Loan Management System — the bank-side system that books, services, and accounts for loans.</td></tr>
+        <tr><td class="req-id">LTV</td><td>Loan-to-Value ratio — the fraction of collateral value that may be lent against.</td></tr>
+        <tr><td class="req-id">Haircut</td><td>The discount applied to a security's market value when assessing its collateral worth, accounting for volatility and liquidity.</td></tr>
+        <tr><td class="req-id">Lien</td><td>A legal encumbrance placed on securities so they cannot be sold or transferred until released.</td></tr>
+        <tr><td class="req-id">STP</td><td>Straight-Through Processing — a fully automated flow with no manual intervention.</td></tr>
+        <tr><td class="req-id">TAT</td><td>Turnaround Time — the elapsed time between request and fulfilment.</td></tr>
+        <tr><td class="req-id">KYC</td><td>Know Your Customer — the process of verifying customer identity.</td></tr>
+        <tr><td class="req-id">MSISDN</td><td>Mobile Subscriber Integrated Services Digital Network number — i.e. a phone number.</td></tr>
+        <tr><td class="req-id">mTLS</td><td>Mutual TLS — both client and server present certificates, used for partner-to-partner traffic.</td></tr>
+        <tr><td class="req-id">Tenant</td><td>A participating bank on Kapu, with its own configuration, data partition, and product rules.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ ASSUMPTIONS ═══════════════ -->
+<section id="assumptions" style="background: var(--ink-50);">
+  <div class="wrap">
+    <div class="section-eyebrow">16 · Assumptions</div>
+    <h2>What this specification depends on being true.</h2>
+
+    <div class="grid-2" style="margin-top: 36px;">
+      <div class="card">
+        <h4>Regulatory</h4>
+        <p style="font-size:0.92rem;margin:0;">A market-utility model for securities-backed lending is permissible under Bank of Tanzania and CMSA regulations, with appropriate licensing and oversight. Digital signatures and lien marking via API are accepted as legally equivalent to paper-based processes.</p>
+      </div>
+      <div class="card">
+        <h4>Stakeholder integration</h4>
+        <p style="font-size:0.92rem;margin:0;">DSE, CDS, brokers, and the CRB are willing and able to expose stable, real-time APIs covering portfolio retrieval, pricing, lien marking, lien release, liquidation instructions, and credit reporting.</p>
+      </div>
+      <div class="card">
+        <h4>Bank participation</h4>
+        <p style="font-size:0.92rem;margin:0;">Participating banks have, or will build, the LMS endpoints required to plug into Kapu's contract, and will operate a sandbox environment for integration testing.</p>
+      </div>
+      <div class="card">
+        <h4>Customer reach</h4>
+        <p style="font-size:0.92rem;margin:0;">Shareholders have access to either a smartphone (for the mobile app) or WhatsApp (for the chatbot) and a phone number registered against their CDS account.</p>
+      </div>
+      <div class="card">
+        <h4>Risk parameters</h4>
+        <p style="font-size:0.92rem;margin:0;">Each bank tenant will define and own its eligible-securities whitelist, LTV bands, haircut tables, and exposure limits, with the ability to update them through Kapu's admin console.</p>
+      </div>
+      <div class="card">
+        <h4>Payment infrastructure</h4>
+        <p style="font-size:0.92rem;margin:0;">Disbursement and repayment can be reliably executed across the major Tanzanian payment rails (TIPS, mobile money, card, direct bank transfer) with confirmable, idempotent transaction semantics.</p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 36px;">
+      <div class="callout-title">↳ Out of scope (for this specification)</div>
+      <p style="margin:0;">Cost &amp; benefit modelling, detailed financial projections, headcount plans, vendor selection, and detailed UI/UX wireframes are deliberately deferred to subsequent documents. This specification establishes the product, the modules, the architecture, and the contracts.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-mark">Kapu<span>.</span></div>
+    <p style="margin:0 auto;max-width:560px;">Universal securities-backed lending. Built so a shareholder, a bank, or a regulator can each see exactly what they need — and nothing more.</p>
+    <p style="margin-top:24px;font-size:0.78rem;color:var(--ink-500);">Specification v1.0 · Draft · May 2026 · Prepared for review by product, engineering, risk &amp; compliance stakeholders.</p>
+  </div>
+</footer>
+
+<script>
+  // Lightweight scroll-reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+</script>
+
+</body>
+</html>
