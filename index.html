@@ -1388,6 +1388,266 @@ section:last-of-type { border-bottom: none; }
       <div class="callout-title">↳ The WhatsApp variant</div>
       <p style="margin: 0;">The same flow renders as a structured chat conversation: Kapu prompts for the CDS account, sends the OTP via SMS, then walks the shareholder through portfolio summary, loan request, offer comparison (rendered as numbered list buttons), and signature confirmation. Functionally identical, optimised for low-bandwidth reach.</p>
     </div>
+
+    <!-- ══ BRANDING & DESIGN TOKENS ══ -->
+    <h3 style="margin-top: 64px;">Brand &amp; Design Tokens</h3>
+    <p style="font-size:0.95rem; color:var(--ink-600); margin-bottom: 32px;">Complete reference for the frontend team. Every colour is a live CSS custom property on <code>:root</code> — use the variable names directly in your stylesheets. Fonts are loaded via Google Fonts.</p>
+
+    <!-- ── 1. Colour Palette ── -->
+    <div class="card" style="margin-bottom:20px;">
+      <div style="font-family:var(--font-display);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--kapu-primary-dark);margin-bottom:18px;">1 · Colour Palette</div>
+
+      <div style="font-size:0.8rem;font-weight:600;color:var(--ink-700);margin-bottom:8px;">Primary · Brand Purple</div>
+      <div style="height:32px;border-radius:8px;background:linear-gradient(90deg,#faeefb 0%,#f3d8f5 16%,#e6b0eb 32%,#d678dc 46%,#b636bd 60%,#7a1f80 78%,#4d1352 100%);margin-bottom:14px;"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px;">
+        <div style="text-align:center;min-width:70px;">
+          <div style="width:58px;height:50px;border-radius:10px;background:#faeefb;border:1px solid var(--ink-200);margin:0 auto 5px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.65rem;font-weight:600;color:var(--ink-800);">#faeefb</div>
+          <div style="font-size:0.58rem;color:var(--ink-500);">--kapu-primary-50</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="width:58px;height:50px;border-radius:10px;background:#f3d8f5;border:1px solid var(--ink-200);margin:0 auto 5px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.65rem;font-weight:600;color:var(--ink-800);">#f3d8f5</div>
+          <div style="font-size:0.58rem;color:var(--ink-500);">--kapu-primary-100</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="width:58px;height:50px;border-radius:10px;background:#e6b0eb;border:1px solid var(--ink-200);margin:0 auto 5px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.65rem;font-weight:600;color:var(--ink-800);">#e6b0eb</div>
+          <div style="font-size:0.58rem;color:var(--ink-500);">--kapu-primary-200</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="width:58px;height:50px;border-radius:10px;background:#d678dc;border:1px solid var(--ink-200);margin:0 auto 5px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.65rem;font-weight:600;color:var(--ink-800);">#d678dc</div>
+          <div style="font-size:0.58rem;color:var(--ink-500);">--kapu-primary-light</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="width:58px;height:50px;border-radius:10px;background:#b636bd;border:1px solid var(--ink-200);margin:0 auto 5px;box-shadow:0 4px 12px rgba(182,54,189,0.4);"></div>
+          <div style="font-family:var(--font-mono);font-size:0.65rem;font-weight:600;color:var(--ink-800);">#b636bd</div>
+          <div style="font-size:0.58rem;color:var(--ink-500);">--kapu-primary</div>
+          <div style="display:inline-block;font-size:0.58rem;background:var(--kapu-primary-50);color:var(--kapu-primary-dark);padding:1px 7px;border-radius:99px;font-weight:700;margin-top:3px;">★ Main</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="width:58px;height:50px;border-radius:10px;background:#7a1f80;border:1px solid var(--ink-200);margin:0 auto 5px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.65rem;font-weight:600;color:var(--ink-800);">#7a1f80</div>
+          <div style="font-size:0.58rem;color:var(--ink-500);">--kapu-primary-dark</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="width:58px;height:50px;border-radius:10px;background:#4d1352;border:1px solid var(--ink-200);margin:0 auto 5px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.65rem;font-weight:600;color:var(--ink-800);">#4d1352</div>
+          <div style="font-size:0.58rem;color:var(--ink-500);">--kapu-primary-darker</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:28px;border-top:1px solid var(--ink-200);padding-top:24px;">
+        <!-- Semantic -->
+        <div style="flex:1;min-width:280px;">
+          <div style="font-size:0.8rem;font-weight:600;color:var(--ink-700);margin-bottom:14px;">Semantic Colours</div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;">
+            <div style="text-align:center;min-width:70px;">
+              <div style="width:58px;height:50px;border-radius:10px;background:#ffb547;border:1px solid var(--ink-200);margin:0 auto 5px;box-shadow:0 4px 12px rgba(255,181,71,0.4);"></div>
+              <div style="font-family:var(--font-mono);font-size:0.65rem;font-weight:600;color:var(--ink-800);">#ffb547</div>
+              <div style="font-size:0.58rem;color:var(--ink-500);">--kapu-accent</div>
+              <div style="font-size:0.62rem;font-weight:500;color:var(--ink-700);">Accent</div>
+            </div>
+            <div style="text-align:center;min-width:70px;">
+              <div style="width:58px;height:50px;border-radius:10px;background:#2bb673;border:1px solid var(--ink-200);margin:0 auto 5px;box-shadow:0 4px 12px rgba(43,182,115,0.35);"></div>
+              <div style="font-family:var(--font-mono);font-size:0.65rem;font-weight:600;color:var(--ink-800);">#2bb673</div>
+              <div style="font-size:0.58rem;color:var(--ink-500);">--kapu-success</div>
+              <div style="font-size:0.62rem;font-weight:500;color:var(--ink-700);">Success</div>
+            </div>
+            <div style="text-align:center;min-width:70px;">
+              <div style="width:58px;height:50px;border-radius:10px;background:#e85b5b;border:1px solid var(--ink-200);margin:0 auto 5px;box-shadow:0 4px 12px rgba(232,91,91,0.35);"></div>
+              <div style="font-family:var(--font-mono);font-size:0.65rem;font-weight:600;color:var(--ink-800);">#e85b5b</div>
+              <div style="font-size:0.58rem;color:var(--ink-500);">--kapu-danger</div>
+              <div style="font-size:0.62rem;font-weight:500;color:var(--ink-700);">Danger</div>
+            </div>
+            <div style="text-align:center;min-width:70px;">
+              <div style="width:58px;height:50px;border-radius:10px;background:#4a90e2;border:1px solid var(--ink-200);margin:0 auto 5px;box-shadow:0 4px 12px rgba(74,144,226,0.35);"></div>
+              <div style="font-family:var(--font-mono);font-size:0.65rem;font-weight:600;color:var(--ink-800);">#4a90e2</div>
+              <div style="font-size:0.58rem;color:var(--ink-500);">--kapu-info</div>
+              <div style="font-size:0.62rem;font-weight:500;color:var(--ink-700);">Info</div>
+            </div>
+          </div>
+        </div>
+        <!-- Ink scale -->
+        <div style="flex:1;min-width:320px;">
+          <div style="font-size:0.8rem;font-weight:600;color:var(--ink-700);margin-bottom:14px;">Neutral / Ink Scale</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <div style="text-align:center;min-width:50px;">
+              <div style="width:42px;height:42px;border-radius:8px;background:#ffffff;border:1px solid var(--ink-200);margin:0 auto 4px;"></div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;font-weight:600;color:var(--ink-800);">#ffffff</div>
+              <div style="font-size:0.56rem;color:var(--ink-500);">--bg</div>
+            </div>
+            <div style="text-align:center;min-width:50px;">
+              <div style="width:42px;height:42px;border-radius:8px;background:#fafafc;border:1px solid var(--ink-200);margin:0 auto 4px;"></div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;font-weight:600;color:var(--ink-800);">#fafafc</div>
+              <div style="font-size:0.56rem;color:var(--ink-500);">--ink-50</div>
+            </div>
+            <div style="text-align:center;min-width:50px;">
+              <div style="width:42px;height:42px;border-radius:8px;background:#f5f3f7;border:1px solid var(--ink-200);margin:0 auto 4px;"></div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;font-weight:600;color:var(--ink-800);">#f5f3f7</div>
+              <div style="font-size:0.56rem;color:var(--ink-500);">--ink-100</div>
+            </div>
+            <div style="text-align:center;min-width:50px;">
+              <div style="width:42px;height:42px;border-radius:8px;background:#ebe8ee;border:1px solid var(--ink-200);margin:0 auto 4px;"></div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;font-weight:600;color:var(--ink-800);">#ebe8ee</div>
+              <div style="font-size:0.56rem;color:var(--ink-500);">--ink-200</div>
+            </div>
+            <div style="text-align:center;min-width:50px;">
+              <div style="width:42px;height:42px;border-radius:8px;background:#d6d2db;margin:0 auto 4px;"></div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;font-weight:600;color:var(--ink-800);">#d6d2db</div>
+              <div style="font-size:0.56rem;color:var(--ink-500);">--ink-300</div>
+            </div>
+            <div style="text-align:center;min-width:50px;">
+              <div style="width:42px;height:42px;border-radius:8px;background:#b3acb8;margin:0 auto 4px;"></div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;font-weight:600;color:var(--ink-800);">#b3acb8</div>
+              <div style="font-size:0.56rem;color:var(--ink-500);">--ink-400</div>
+            </div>
+            <div style="text-align:center;min-width:50px;">
+              <div style="width:42px;height:42px;border-radius:8px;background:#8c8595;margin:0 auto 4px;"></div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;font-weight:600;color:var(--ink-800);">#8c8595</div>
+              <div style="font-size:0.56rem;color:var(--ink-500);">--ink-500</div>
+            </div>
+            <div style="text-align:center;min-width:50px;">
+              <div style="width:42px;height:42px;border-radius:8px;background:#6b6275;margin:0 auto 4px;"></div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;font-weight:600;color:var(--ink-300);">#6b6275</div>
+              <div style="font-size:0.56rem;color:var(--ink-500);">--ink-600</div>
+            </div>
+            <div style="text-align:center;min-width:50px;">
+              <div style="width:42px;height:42px;border-radius:8px;background:#4b4255;margin:0 auto 4px;"></div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;font-weight:600;color:var(--ink-300);">#4b4255</div>
+              <div style="font-size:0.56rem;color:var(--ink-500);">--ink-700</div>
+            </div>
+            <div style="text-align:center;min-width:50px;">
+              <div style="width:42px;height:42px;border-radius:8px;background:#2a2230;margin:0 auto 4px;"></div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;font-weight:600;color:var(--ink-300);">#2a2230</div>
+              <div style="font-size:0.56rem;color:var(--ink-500);">--ink-800</div>
+            </div>
+            <div style="text-align:center;min-width:50px;">
+              <div style="width:42px;height:42px;border-radius:8px;background:#14101a;margin:0 auto 4px;"></div>
+              <div style="font-family:var(--font-mono);font-size:0.58rem;font-weight:600;color:var(--ink-300);">#14101a</div>
+              <div style="font-size:0.56rem;color:var(--ink-500);">--ink-900</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 2. Key Gradients ── -->
+    <div class="card" style="margin-bottom:20px;">
+      <div style="font-family:var(--font-display);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--kapu-primary-dark);margin-bottom:18px;">2 · Key Gradients</div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;">
+        <div style="flex:1;min-width:200px;">
+          <div style="height:52px;border-radius:10px;background:linear-gradient(135deg,#b636bd 0%,#4d1352 100%);margin-bottom:8px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;font-weight:600;color:var(--ink-800);">Primary Gradient</div>
+          <div style="font-family:var(--font-mono);font-size:0.63rem;color:var(--ink-500);margin-top:2px;">135deg · #b636bd → #4d1352</div>
+          <div style="font-size:0.68rem;color:var(--ink-600);margin-top:3px;">CTAs, buttons, hub, module top bars</div>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <div style="height:52px;border-radius:10px;background:linear-gradient(135deg,#d678dc 0%,#b636bd 100%);margin-bottom:8px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;font-weight:600;color:var(--ink-800);">Light Gradient</div>
+          <div style="font-family:var(--font-mono);font-size:0.63rem;color:var(--ink-500);margin-top:2px;">135deg · #d678dc → #b636bd</div>
+          <div style="font-size:0.68rem;color:var(--ink-600);margin-top:3px;">Step badges, active highlights</div>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <div style="height:52px;border-radius:10px;background:linear-gradient(180deg,#ffffff 0%,#faeefb 100%);border:1px solid var(--ink-200);margin-bottom:8px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;font-weight:600;color:var(--ink-800);">Surface Gradient</div>
+          <div style="font-family:var(--font-mono);font-size:0.63rem;color:var(--ink-500);margin-top:2px;">180deg · #ffffff → #faeefb</div>
+          <div style="font-size:0.68rem;color:var(--ink-600);margin-top:3px;">Cards, arch panels, milestones</div>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <div style="height:52px;border-radius:10px;background:linear-gradient(135deg,#14101a 0%,#4d1352 100%);margin-bottom:8px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;font-weight:600;color:var(--ink-800);">Dark Gradient</div>
+          <div style="font-family:var(--font-mono);font-size:0.63rem;color:var(--ink-500);margin-top:2px;">135deg · #14101a → #4d1352</div>
+          <div style="font-size:0.68rem;color:var(--ink-600);margin-top:3px;">Footer, dark surfaces</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 3. Typography ── -->
+    <div class="card" style="margin-bottom:20px;">
+      <div style="font-family:var(--font-display);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--kapu-primary-dark);margin-bottom:18px;">3 · Typography</div>
+      <div style="overflow-x:auto;">
+        <table class="req-table">
+          <thead>
+            <tr>
+              <th>Role</th>
+              <th>Family</th>
+              <th>CSS Variable</th>
+              <th>Weights</th>
+              <th>Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:500;">Display</td>
+              <td style="font-family:var(--font-display);font-weight:700;font-size:1.05rem;">Google Sans</td>
+              <td><code>--font-display</code></td>
+              <td>400, 500, <strong>700</strong></td>
+              <td>h1–h5, nav, buttons, badges, stat numbers</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;">Body</td>
+              <td>Google Sans Text</td>
+              <td><code>--font</code></td>
+              <td>400, <strong>500</strong></td>
+              <td>Body copy, paragraphs, labels · 16px base</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;">Mono</td>
+              <td style="font-family:var(--font-mono);">Google Sans Mono</td>
+              <td><code>--font-mono</code></td>
+              <td>400, <strong>500</strong></td>
+              <td>Hex values, IDs, module tags, data labels · 0.9em</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:20px;padding:22px 24px;background:var(--ink-50);border-radius:var(--radius);border:1px solid var(--ink-200);">
+        <div style="font-family:var(--font-display);font-size:2.2rem;font-weight:700;color:var(--ink-900);line-height:1.15;letter-spacing:-0.03em;">Kapu — Display 700</div>
+        <div style="font-family:var(--font-display);font-size:1.35rem;font-weight:500;color:var(--ink-700);margin-top:4px;letter-spacing:-0.02em;">Section heading · Display 500</div>
+        <div style="font-size:1rem;color:var(--ink-700);margin-top:10px;line-height:1.6;">Body text — Google Sans Text 400 · 16px base. Used for all descriptive and paragraph content across the app and WhatsApp flow.</div>
+        <div style="font-family:var(--font-mono);font-size:0.88rem;color:var(--kapu-primary-darker);margin-top:8px;">Mono: #b636bd · TSh 14,820,500 · REQ-001 · M01-IDENTITY</div>
+      </div>
+    </div>
+
+    <!-- ── 4. Border Radius Tokens ── -->
+    <div class="card">
+      <div style="font-family:var(--font-display);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--kapu-primary-dark);margin-bottom:18px;">4 · Border Radius Tokens</div>
+      <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;">
+        <div style="text-align:center;">
+          <div style="width:52px;height:52px;background:var(--kapu-primary-100);border-radius:6px;margin:0 auto 8px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.68rem;font-weight:600;color:var(--ink-800);">6px</div>
+          <div style="font-size:0.6rem;color:var(--ink-500);">--radius-sm</div>
+          <div style="font-size:0.6rem;color:var(--ink-600);">Pills · chips</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:52px;height:52px;background:var(--kapu-primary-200);border-radius:12px;margin:0 auto 8px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.68rem;font-weight:600;color:var(--ink-800);">12px</div>
+          <div style="font-size:0.6rem;color:var(--ink-500);">--radius</div>
+          <div style="font-size:0.6rem;color:var(--ink-600);">Cards · inputs</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:52px;height:52px;background:var(--kapu-primary-light);border-radius:20px;margin:0 auto 8px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.68rem;font-weight:600;color:var(--ink-800);">20px</div>
+          <div style="font-size:0.6rem;color:var(--ink-500);">--radius-lg</div>
+          <div style="font-size:0.6rem;color:var(--ink-600);">Panels · modules</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:52px;height:52px;background:var(--kapu-primary);border-radius:28px;margin:0 auto 8px;box-shadow:0 4px 12px rgba(182,54,189,0.3);"></div>
+          <div style="font-family:var(--font-mono);font-size:0.68rem;font-weight:600;color:var(--ink-800);">28px</div>
+          <div style="font-size:0.6rem;color:var(--ink-500);">--radius-xl</div>
+          <div style="font-size:0.6rem;color:var(--ink-600);">Large surfaces</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:72px;height:32px;background:var(--kapu-primary-dark);border-radius:999px;margin:0 auto 8px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.68rem;font-weight:600;color:var(--ink-800);">999px</div>
+          <div style="font-size:0.6rem;color:var(--ink-500);">full pill</div>
+          <div style="font-size:0.6rem;color:var(--ink-600);">Buttons · tags</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
