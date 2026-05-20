@@ -1554,7 +1554,7 @@ section:last-of-type { border-bottom: none; }
   <div class="wrap">
     <div class="section-eyebrow">06 · Process Flows</div>
     <h2>How the modules dance together.</h2>
-    <p class="section-lead">Three flows show the full life-cycle: registration, loan origination, and repayment / closure.</p>
+    <p class="section-lead">Four flows show the full life-cycle: registration, loan origination, back-office documentation &amp; submission, and repayment / closure.</p>
 
     <h3 style="margin-top: 48px;">Flow A · Registration &amp; Onboarding</h3>
     <div class="arch-stage">
@@ -1762,6 +1762,138 @@ section:last-of-type { border-bottom: none; }
         <p style="font-size:0.92rem;margin:0;">After the bank's grace period, Kapu instructs the broker to liquidate pledged shares on the DSE. Proceeds settle the outstanding; surplus returns to the shareholder.</p>
       </div>
     </div>
+
+    <h3 style="margin-top: 64px;">Flow D &middot; Loan Documentation &amp; Back-Office Submission</h3>
+    <p style="font-size:0.95rem; color: var(--ink-600); margin-bottom: 4px;">The back-office paper trail that must be completed — in sequence, by the correct party — before a loan application proceeds to disbursement. Two forms, two required stamps, one National ID upload, and a per-counter processing fee.</p>
+
+    <div class="arch-stage">
+      <svg viewBox="0 0 1280 420" style="width:100%;height:auto;display:block;font-family:var(--font);">
+        <defs>
+          <linearGradient id="boxGradD" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#faeefb"/>
+          </linearGradient>
+          <linearGradient id="purpleGradD" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#b636bd"/>
+            <stop offset="100%" stop-color="#4d1352"/>
+          </linearGradient>
+          <marker id="arrowD" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a1f80"/>
+          </marker>
+        </defs>
+
+        <!-- Lane labels -->
+        <text x="20" y="42" font-size="10" font-weight="700" fill="#6b6275" letter-spacing="1">SHAREHOLDER</text>
+        <text x="20" y="137" font-size="10" font-weight="700" fill="#6b6275" letter-spacing="1">KAPU</text>
+        <text x="20" y="237" font-size="10" font-weight="700" fill="#6b6275" letter-spacing="1">BANK</text>
+        <text x="20" y="347" font-size="10" font-weight="700" fill="#6b6275" letter-spacing="1">BROKER</text>
+
+        <!-- Lane dividers -->
+        <line x1="140" y1="10" x2="140" y2="410" stroke="#ebe8ee" stroke-width="1"/>
+        <line x1="140" y1="90" x2="1270" y2="90" stroke="#ebe8ee" stroke-dasharray="3 3"/>
+        <line x1="140" y1="190" x2="1270" y2="190" stroke="#ebe8ee" stroke-dasharray="3 3"/>
+        <line x1="140" y1="295" x2="1270" y2="295" stroke="#ebe8ee" stroke-dasharray="3 3"/>
+
+        <!-- Step 1: Upload National ID (SHAREHOLDER) -->
+        <g>
+          <rect x="155" y="15" width="130" height="55" rx="10" fill="url(#boxGradD)" stroke="#e6b0eb"/>
+          <text x="220" y="29" text-anchor="middle" font-size="8.5" font-weight="700" fill="#7a1f80" letter-spacing="0.5">01 · ID UPLOAD</text>
+          <text x="220" y="44" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">National ID</text>
+          <text x="220" y="59" text-anchor="middle" font-size="9" fill="#6b6275">Once · reused per application</text>
+        </g>
+
+        <!-- Step 2: Mortgage Form generated (KAPU) -->
+        <g>
+          <rect x="305" y="110" width="130" height="55" rx="10" fill="url(#purpleGradD)"/>
+          <text x="370" y="124" text-anchor="middle" font-size="8.5" font-weight="700" fill="#f3d8f5" letter-spacing="0.5">02 · GENERATE</text>
+          <text x="370" y="139" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Mortgage Form</text>
+          <text x="370" y="154" text-anchor="middle" font-size="9" fill="#f3d8f5">Bank Authorisation PDF</text>
+        </g>
+
+        <!-- Step 3: Bank Authorisation Stamp (BANK) -->
+        <g>
+          <rect x="455" y="210" width="130" height="55" rx="10" fill="url(#boxGradD)" stroke="#e6b0eb"/>
+          <text x="520" y="224" text-anchor="middle" font-size="8.5" font-weight="700" fill="#7a1f80" letter-spacing="0.5">03 · BANK STAMP</text>
+          <text x="520" y="239" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">Bank Auth Stamp</text>
+          <text x="520" y="254" text-anchor="middle" font-size="9" fill="#6b6275">Must · digital or physical upload</text>
+        </g>
+
+        <!-- Step 4: Broker stamps Mortgage Form (BROKER) -->
+        <g>
+          <rect x="605" y="320" width="130" height="55" rx="10" fill="url(#boxGradD)" stroke="#e6b0eb"/>
+          <text x="670" y="334" text-anchor="middle" font-size="8.5" font-weight="700" fill="#7a1f80" letter-spacing="0.5">04 · BROKER STAMP</text>
+          <text x="670" y="349" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">Stamp Mortgage Form</text>
+          <text x="670" y="364" text-anchor="middle" font-size="9" fill="#6b6275">Must · digital or upload</text>
+        </g>
+
+        <!-- Step 5: Fill + Stamp LDM Form (BROKER) -->
+        <g>
+          <rect x="755" y="320" width="135" height="55" rx="10" fill="url(#purpleGradD)"/>
+          <text x="822" y="334" text-anchor="middle" font-size="8.5" font-weight="700" fill="#f3d8f5" letter-spacing="0.5">05 · LDM FORM</text>
+          <text x="822" y="349" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Fill + Stamp LDM</text>
+          <text x="822" y="364" text-anchor="middle" font-size="9" fill="#f3d8f5">Broker only · digital or upload</text>
+        </g>
+
+        <!-- Step 6: All docs verified (KAPU) -->
+        <g>
+          <rect x="905" y="110" width="130" height="55" rx="10" fill="url(#purpleGradD)"/>
+          <text x="970" y="124" text-anchor="middle" font-size="8.5" font-weight="700" fill="#f3d8f5" letter-spacing="0.5">06 · VERIFY</text>
+          <text x="970" y="139" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">All Docs Verified</text>
+          <text x="970" y="154" text-anchor="middle" font-size="9" fill="#f3d8f5">ID + Mortgage + LDM</text>
+        </g>
+
+        <!-- Step 7: Select counters + pay fee (SHAREHOLDER) -->
+        <g>
+          <rect x="1055" y="15" width="155" height="55" rx="10" fill="url(#boxGradD)" stroke="#e6b0eb"/>
+          <text x="1132" y="29" text-anchor="middle" font-size="8.5" font-weight="700" fill="#7a1f80" letter-spacing="0.5">07 · FEE PAYMENT</text>
+          <text x="1132" y="44" text-anchor="middle" font-size="11" font-weight="700" fill="#14101a">Select Counters + Pay</text>
+          <text x="1132" y="59" text-anchor="middle" font-size="9" fill="#6b6275">TSh 20,000 &times; # counters</text>
+        </g>
+
+        <!-- Connectors -->
+        <!-- 1 → 2 -->
+        <path d="M 220 70 Q 240 115 305 137" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrowD)"/>
+        <!-- 2 → 3 -->
+        <path d="M 435 140 Q 448 200 455 232" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrowD)"/>
+        <!-- 3 → 4 -->
+        <path d="M 585 245 Q 597 300 605 342" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrowD)"/>
+        <!-- 4 → 5 (horizontal, same lane) -->
+        <path d="M 735 347 L 755 347" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrowD)"/>
+        <!-- 5 → 6 (up two lanes) -->
+        <path d="M 890 332 Q 900 218 905 140" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrowD)"/>
+        <!-- 6 → 7 (up one lane) -->
+        <path d="M 1035 130 Q 1047 80 1055 43" fill="none" stroke="#7a1f80" stroke-width="1.5" marker-end="url(#arrowD)"/>
+
+        <!-- → Flow B label -->
+        <text x="1222" y="46" font-size="10" fill="#7a1f80" font-weight="700">&rarr; Flow B</text>
+        <line x1="1210" y1="42" x2="1221" y2="42" stroke="#7a1f80" stroke-width="1.5"/>
+      </svg>
+    </div>
+
+    <div class="grid-2" style="margin-top: 24px;">
+      <div class="callout">
+        <div class="callout-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Stamp mechanism &mdash; two paths
+        </div>
+        <p style="margin:0; font-size:0.9rem;">
+          <strong>Digital stamp (in-app):</strong> The authorised party &mdash; bank officer or broker &mdash; applies their registered digital seal directly within Kapu. The document is cryptographically locked the moment both required stamps are present.<br><br>
+          <strong>Download &rarr; stamp &rarr; re-upload:</strong> The party downloads the PDF, applies a physical stamp and wet signature, then re-uploads the scanned file. Kapu accepts the upload, version-locks it, and attaches it to the application record. Both paths produce a full audit trail.
+        </p>
+      </div>
+      <div class="callout">
+        <div class="callout-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          Counter fee &mdash; TSh 20,000 per counter
+        </div>
+        <p style="margin:0; font-size:0.9rem;">
+          A <strong>counter</strong> is each custodian or stock exchange the borrower is using to access the loan. Supported counters include <strong>CRDB, NMB, TCL</strong> and other participating institutions. Each counter selected incurs a flat fee:<br><br>
+          <code>Total fee = TSh 20,000 &times; counters selected</code><br><br>
+          The borrower selects their counters in-app, the total is calculated automatically, and payment is collected before the application is forwarded to the bank for disbursement.
+        </p>
+      </div>
+    </div>
+
   </div>
 </section>
 
